@@ -78,19 +78,24 @@ class Laser {
 	String side;
 	boolean del = false;
 
-	Laser(String sideIn, float tempX, float tempY) {
-		x = tempX;
-		y = tempY;
+	Laser(String sideIn, float laserX, float laserY) {
+		x = laserX;
+		y = laserY;
 		speed = 10;
 		side = sideIn;
 	}
 
-	public void displayLaser() {
-		stroke(255, 0, 0);
+	public void display() {
+		if(side == "left") {
+			stroke(255, 0, 0);
+		}
+		else {
+			stroke(0, 255, 0);
+		}
 		point(x, y);
 	}
 
-	public void moveLaser() {
+	public void move() {
 		if(side == "left") {
 			if(x < frameWidth/6 *5) {
 				x += speed;
@@ -110,44 +115,40 @@ class Laser {
 	}
 
 }//
-//---------temp laser class -----------------------------
+//--------- laser class -----------------------------
 
 //--------- laser stuff ---------------------------------
 public void keyPressed() {
-	if(key == 'a' || key == 'A') {
-		Laser temp = new Laser("left", random(0, frameWidth/6), random(0, frameHeight));
-		lasers.add(temp);
+	while(key == 'a' || key == 'A') {
+		Laser laser = new Laser("left", random(0, frameWidth/6), random(0, frameHeight));
+		lasers.add(laser);
+	}
+	while(key == 'l' || key == 'L') {
+		Laser laser = new Laser("right", random(frameWidth/6* 5, frameWidth/6), random(0, frameHeight));
+		lasers.add(laser);
 	}
 }
 
 public void moveAll() {
 	//println(lasers.size());
-	for(Laser temp : lasers) {
-		temp.moveLaser();
+	for(Laser laser : lasers) {
+		laser.move();
 	}
 }
 
-public void deleteLaser(Laser laserToRemove) {
+public void checkForDelete() {
 	for(int i = 0; i < lasers.size(); i++) {
-		Laser thisTemp = lasers.get(i);
-		if(thisTemp == laserToRemove) {
+		Laser thisLaser = lasers.get(i);
+		if(thisLaser.del) {
 			lasers.remove(i);
 			break;
 		}
 	}
 }
 
-public void checkForDelete() {
-	for(Laser temp : lasers) {
-		if(temp.del) {
-			deleteLaser(this);
-		}
-	}
-}
-
 public void displayAll() {
-	for(Laser temp : lasers) {
-		temp.displayLaser();
+	for(Laser laser : lasers) {
+		laser.display();
 	}
 }
 //--------- laser stuff ---------------------------------

@@ -62,19 +62,24 @@ class Laser {
 	String side;
 	boolean del = false;
 
-	Laser(String sideIn, float tempX, float tempY) {
-		x = tempX;
-		y = tempY;
+	Laser(String sideIn, float laserX, float laserY) {
+		x = laserX;
+		y = laserY;
 		speed = 10;
 		side = sideIn;
 	}
 
-	void displayLaser() {
-		stroke(255, 0, 0);
+	void display() {
+		if(side == "left") {
+			stroke(255, 0, 0);
+		}
+		else {
+			stroke(0, 255, 0);
+		}
 		point(x, y);
 	}
 
-	void moveLaser() {
+	void move() {
 		if(side == "left") {
 			if(x < frameWidth/6 *5) {
 				x += speed;
@@ -94,44 +99,40 @@ class Laser {
 	}
 
 }//
-//---------temp laser class -----------------------------
+//--------- laser class -----------------------------
 
 //--------- laser stuff ---------------------------------
 void keyPressed() {
 	if(key == 'a' || key == 'A') {
-		Laser temp = new Laser("left", random(0, frameWidth/6), random(0, frameHeight));
-		lasers.add(temp);
+		Laser laser = new Laser("left", random(0, frameWidth/6), random(0, frameHeight));
+		lasers.add(laser);
+	}
+	else if(key == 'l' || key == 'L') {
+		Laser laser = new Laser("right", random(frameWidth/6* 5, frameWidth/6), random(0, frameHeight));
+		lasers.add(laser);
 	}
 }
 
 void moveAll() {
 	//println(lasers.size());
-	for(Laser temp : lasers) {
-		temp.moveLaser();
+	for(Laser laser : lasers) {
+		laser.move();
 	}
 }
 
-void deleteLaser(Laser laserToRemove) {
+void checkForDelete() {
 	for(int i = 0; i < lasers.size(); i++) {
-		Laser thisTemp = lasers.get(i);
-		if(thisTemp == laserToRemove) {
+		Laser thisLaser = lasers.get(i);
+		if(thisLaser.del) {
 			lasers.remove(i);
 			break;
 		}
 	}
 }
 
-void checkForDelete() {
-	for(Laser temp : lasers) {
-		if(temp.del) {
-			deleteLaser(temp);
-		}
-	}
-}
-
 void displayAll() {
-	for(Laser temp : lasers) {
-		temp.displayLaser();
+	for(Laser laser : lasers) {
+		laser.display();
 	}
 }
 //--------- laser stuff ---------------------------------
