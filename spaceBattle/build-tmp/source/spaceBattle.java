@@ -18,12 +18,13 @@ int frameWidth = 1400; // Width of window in passable variable
 int frameHeight = 650; // Height of window in passable variable
 Star [] starTest = new Star [100]; // Initialize star background
 //----
-ArrayList <LaserTest> lasers;
+ArrayList <Laser> lasers;
 
 SpaceShip leftShip = new SpaceShip(0, 0, "left", frameWidth/6); 
 SpaceShip rightShip = new SpaceShip(frameWidth/6 * 5, 0, "right", frameWidth/6 * 5);
 //---- ^ Initialize ships screen position and to proper side using string arguement
 public void setup() {
+	frameRate(60);
 	size(frameWidth,frameHeight);
 	for(int i = 0; i < starTest.length; i++) { // initialize starTest to star class
 		starTest[i] = new Star();
@@ -34,9 +35,9 @@ public void setup() {
 public void draw() {
 	background(0);
 	for(int i = 0; i < starTest.length; i++) { // Move star background
-		starTest[i].displayStar();
-		starTest[i].moveStar();
-		starTest[i].resetStar();
+		//starTest[i].displayStar();
+		//starTest[i].moveStar();
+		//starTest[i].resetStar();
 	}
 	leftShip.displayShip();
 	rightShip.displayShip();
@@ -52,8 +53,6 @@ class SpaceShip {
 	float wid; // width of ship determined by parameter
 	float shipX, shipY; // Ship x and y, determinded by perameter
 	String side; // side the ship is on, used for laser guiding and other stuff
-	//Laser [] laserShot = new Laser[3];
-	boolean test = false;
 	SpaceShip(float xPos, float yPos, String sideIn, float w) {
 		wid = w;
 		shipX = xPos;
@@ -65,91 +64,31 @@ class SpaceShip {
 		fill(150);
 		rect(shipX,shipY, wid, height);
 	}
-	/*void spawnLaser() {
-		if(keyPressed) {
-			test = true;
-			for(int i = 0; i < laserShot.length; i++) {
-				laserShot[i] = new Laser(side);
-			}
-		}
-	}
 
-	void shootLaser() {
- 		if(test){
-			for(int i = 0; i < laserShot.length; i++) {
-				laserShot[i].displayLaser();
-				laserShot[i].moveLaser();
-			}
-		}
-	}
-*/
 }//
 //-------------- Space Ship Class ---------------------
 
-//-------------- Laser Class --------------------------
-/*class Laser {
-	
-	float laserX, laserY, speed; //position of the laser and speed of laser
-	String side; // side the laser is on
-	Laser(String sideIn) { // passed in from parent ship
-		side = sideIn;
-		if(sideIn == "left") {
-			laserX = leftShip.shipX;
-		} // determines what side laser is on.
-		else {
-			laserX = rightShip.shipX;
-		}
-		laserY = 325; // half of window height ** to be adjusted when bobing is implemented
-		speed = 10; // adjustable speed
-	}
-	void displayLaser() {
-		stroke(255, 0, 0, 125);
-		if(side == "left") {
-			line(laserX - speed, laserY, laserX, laserY);
-		} // determines which side the laser is shot at.
-		else {
-			line(laserX + speed, laserY, laserX, laserY);
-		}
-	}
-	void moveLaser() { // testing laser firing mechanics
-		stroke(255);
-		if(side == "left") {
-			laserX += speed;
-		} // determines which side the laser is shot at.
-		else {
-			laserX -= speed;
-		}
-		print(laserX);
-	}
-
-
-
-}//
-*/
-//-------------- Laser Class --------------------------
-
-
-//---------temp laser class -----------------------------
-class LaserTest {
+//--------- laser class -----------------------------
+class Laser {
 	
 	float x;
 	float y;
 	float speed;
 	String side;
 	
-	LaserTest(String sideIn, float tempX, float tempY) {
+	Laser(String sideIn, float tempX, float tempY) {
 		x = tempX;
 		y = tempY;
-		float speed = 10;
+		speed = 5;
 		side = sideIn;
 	}
 
-	public void displayTestLaser() {
+	public void displayLaser() {
 		stroke(255, 0, 0);
 		point(x, y);
 	}
 
-	public void moveTempLaser() {
+	public void moveLaser() {
 		if(side == "left") {
 			x += speed;
 		}
@@ -163,20 +102,21 @@ class LaserTest {
 //--------- laser stuff ---------------------------------
 public void keyPressed() {
 	if(key == 'a' || key == 'A') {
-		LaserTest temp = new LaserTest("left", random(0, frameWidth/6), random(0, frameHeight));
+		Laser temp = new Laser("left", random(0, frameWidth/6), random(0, frameHeight));
 		lasers.add(temp);
 	}
 }
+public void offScreen() {
 
+}
 public void moveAll() {
-	for(LaserTest temp : lasers) {
-		temp.moveTempLaser();
-		println("hey");
+	for(Laser temp : lasers) {
+		temp.moveLaser();
 	}
 }
 public void displayAll() {
-	for(LaserTest temp : lasers) {
-		temp.displayTestLaser();
+	for(Laser temp : lasers) {
+		temp.displayLaser();
 	}
 }
 //--------- laser stuff ---------------------------------
