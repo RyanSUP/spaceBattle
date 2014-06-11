@@ -2,8 +2,8 @@ int frameWidth = 1400; // Width of window in passable variable
 int frameHeight = 650; // Height of window in passable variable
 Star [] starTest = new Star [100]; // Initialize star background
 //----
-SpaceShip leftShip = new SpaceShip(frameWidth/6, frameHeight/2, "left"); 
-SpaceShip rightShip = new SpaceShip(frameWidth/6 * 5, frameHeight/2, "right");
+SpaceShip leftShip = new SpaceShip(0, 0, "left", frameWidth/6); 
+SpaceShip rightShip = new SpaceShip(frameWidth/6 * 5, 0, "right", frameWidth/6 * 5);
 //---- ^ Initialize ships screen position and to proper side using string arguement
 void setup() {
 	size(frameWidth,frameHeight);
@@ -20,10 +20,7 @@ void draw() {
 		starTest[i].resetStar();
 	}
 	leftShip.displayShip();
-	leftShip.spawnLaser();
-	leftShip.shootLaser();
 	rightShip.displayShip();
-
 }
 
 
@@ -31,24 +28,21 @@ void draw() {
 
 //------------- Space Ship Class --------------------
 class SpaceShip {
-	
+	float wid; // width of ship determined by parameter
 	float shipX, shipY; // Ship x and y, determinded by perameter
-	int w, h; // Width and height of the ship
-	int counterDown, counteruP; // counters for ship bobing function
 	String side; // side the ship is on, used for laser guiding and other stuff
 	Laser [] laserShot = new Laser[3];
 	boolean test = false;
-	SpaceShip(float xPos, float yPos, String sideIn) {
+	SpaceShip(float xPos, float yPos, String sideIn, float w) {
+		wid = w;
 		shipX = xPos;
 		shipY = yPos;
-		w = 50;
-		h = 50;
 		side = sideIn; // screen side
 	}
 	void displayShip() {
 		noStroke();
-		fill(255, 0, 0);
-		ellipse(shipX,shipY, w, h);
+		fill(150);
+		rect(shipX,shipY, wid, height);
 	}
 	void spawnLaser() {
 		if(keyPressed) {
@@ -64,23 +58,6 @@ class SpaceShip {
 			for(int i = 0; i < laserShot.length; i++) {
 				laserShot[i].displayLaser();
 				laserShot[i].moveLaser();
-			}
-		}
-	}
-
-	void bobShip() { // move ship up and down to look cool, needs work. **both ships move the same atm.
-		if(counterDown < 20) {
-			shipY += .15;
-			counterDown++;
-		}
-		else {
-			if(counteruP < 20) {
-				shipY -= .15;
-				counteruP++;
-			}
-			else {
-				counterDown = 0;
-				counteruP = 0;
 			}
 		}
 	}
