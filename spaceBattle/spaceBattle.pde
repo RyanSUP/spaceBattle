@@ -25,6 +25,7 @@ void draw() {
 	}
 	leftShip.displayShip();
 	rightShip.displayShip();
+	checkForDelete();
 	moveAll();
 	displayAll();
 }
@@ -59,7 +60,8 @@ class Laser {
 	float y;
 	float speed;
 	String side;
-	
+	boolean del = false;
+
 	Laser(String sideIn, float tempX, float tempY) {
 		x = tempX;
 		y = tempY;
@@ -74,15 +76,26 @@ class Laser {
 
 	void moveLaser() {
 		if(side == "left") {
-			x += speed;
+			if(x < frameWidth/6 *5) {
+				x += speed;
+			}
+			else {
+				del = true;
+			}
 		}
 		else {
-			x -= speed;
+			if(x > frameWidth/6) {
+				x -= speed;
+			}
+			else {
+				del = true;	
+			}
 		}
 	}
 
 }//
 //---------temp laser class -----------------------------
+
 //--------- laser stuff ---------------------------------
 void keyPressed() {
 	if(key == 'a' || key == 'A') {
@@ -90,14 +103,32 @@ void keyPressed() {
 		lasers.add(temp);
 	}
 }
-void offScreen() {
 
-}
 void moveAll() {
+	//println(lasers.size());
 	for(Laser temp : lasers) {
 		temp.moveLaser();
 	}
 }
+
+void deleteLaser(Laser laserToRemove) {
+	for(int i = 0; i < lasers.size(); i++) {
+		Laser thisTemp = lasers.get(i);
+		if(thisTemp == laserToRemove) {
+			lasers.remove(i);
+			break;
+		}
+	}
+}
+
+void checkForDelete() {
+	for(Laser temp : lasers) {
+		if(temp.del) {
+			deleteLaser(temp);
+		}
+	}
+}
+
 void displayAll() {
 	for(Laser temp : lasers) {
 		temp.displayLaser();
@@ -122,6 +153,7 @@ class Star {
 		stroke(255);
 		point(starX, starY);
 	}
+	
 	void moveStar() { //move stars
 		starX -=  starSpeed;
 	}
