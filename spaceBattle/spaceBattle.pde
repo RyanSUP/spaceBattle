@@ -148,13 +148,14 @@ class LaserTest {
 void keyPressed() {
 	if(key == 'a' || key == 'A') {
 		LaserTest temp = new LaserTest("left", random(0, frameWidth/6), random(0, frameHeight));
+		lasers.add(temp);
 	}
-	lasers.add(temp);
 }
 
 void moveAll() {
 	for(LaserTest temp : lasers) {
 		temp.moveTempLaser();
+		println("hey");
 	}
 }
 void displayAll() {
