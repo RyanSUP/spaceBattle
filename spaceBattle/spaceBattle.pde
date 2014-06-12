@@ -48,9 +48,6 @@ void draw() {
 	if(lPressed) fireRight();
 }
 
-
-
-
 //------------- Space Ship Class --------------------
 class SpaceShip {
 	float wid; // width of ship determined by parameter
@@ -195,11 +192,9 @@ void fireRight() {  // create a laser with these properties if the key is presse
 	Laser laser = new Laser("right", random(frameWidth/6* 5, frameWidth), random(0, frameHeight), rightShip.powerAdjustment);
 	lasers.add(laser); // add laser to the laser array list
 }
-
 //----------- stuff effected by controls ------------
 
 //--------- laser stuff ---------------------------------
-
 void moveAll() {
 	for(Laser laser : lasers) {  // for each laser in the array list, move them
 		laser.move();
