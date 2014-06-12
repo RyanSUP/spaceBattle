@@ -80,12 +80,14 @@ class SpaceShip {
 	}
 
 	public void raiseLaserPower() {
-		powerAdjustment += 1;
+		powerAdjustment += .25f;
+		powerAdjustment = constrain(powerAdjustment, 0, 5);
 		println(powerAdjustment);
 	}
 
 	public void lowerLaserPower() {
-		powerAdjustment -= 1;
+		powerAdjustment -= .25f;
+		powerAdjustment = constrain(powerAdjustment, 0, 5);
 		println(powerAdjustment);
 	}
 
