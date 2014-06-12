@@ -1,10 +1,14 @@
 int frameWidth = 1400; // Width of window in passable variable
 int frameHeight = 650; // Height of window in passable variable
-boolean aPressed = false;
-boolean lPressed = false;
-boolean ePressed = false;
-boolean qPressed = false;
 //----
+boolean aPressed = false; // temp fire
+boolean ePressed = false; // raise power
+boolean qPressed = false; // lower power
+//----^ left controls ^----
+boolean lPressed = false;
+boolean iPressed = false;
+boolean pPressed = false;
+//----^ right controls ^----
 Star [] starBg = new Star [100]; // Initialize star background
 //----
 ArrayList <Laser> lasers;
@@ -34,11 +38,14 @@ void draw() {
 	checkForDelete();
 	moveAll();
 	displayAll();
+
 	if(ePressed) leftShip.raiseLaserPower();
 	if(qPressed) leftShip.lowerLaserPower();
+	if(iPressed) rightShip.raiseLaserPower();
+	if(pPressed) rightShip.lowerLaserPower();
+
 	if(aPressed) fireLeft();
 	if(lPressed) fireRight();
-
 }
 
 
@@ -54,7 +61,7 @@ class SpaceShip {
 		wid = w;
 		shipX = xPos;
 		shipY = yPos;
-		powerAdjustment = 0;
+		powerAdjustment = 0; // how much to adjust power (stroke) by
 		side = sideIn; // screen side
 	}
 	void displayShip() {
@@ -63,13 +70,13 @@ class SpaceShip {
 		rect(shipX,shipY, wid, height);
 	}
 
-	void raiseLaserPower() {
+	void raiseLaserPower() { // raise the power (stroke) of laser
 		powerAdjustment += .25;
 		powerAdjustment = constrain(powerAdjustment, 0, 5);
 		println(powerAdjustment);
 	}
 
-	void lowerLaserPower() {
+	void lowerLaserPower() { // lower the power (stroke) of laser
 		powerAdjustment -= .25;
 		powerAdjustment = constrain(powerAdjustment, 0, 5);
 		println(powerAdjustment);
@@ -85,11 +92,11 @@ class Laser {
 	float y;
 	float speed;
 	float power; // size of laser
-	float powerAd;
+	float powerAd; // add thenumber from raiseLaserPower() and lowerLaserPower() to the power of the laser
 	String side;
 	boolean del = false; // boolean for deleting lasers from the array list
 
-	Laser(String sideIn, float laserX, float laserY, float adjPower) { // pass through the position of the laser (also later will pass in thickness)
+	Laser(String sideIn, float laserX, float laserY, float adjPower) { // pass through the position of the laser and its power
 		x = laserX;
 		y = laserY;
 		speed = 10; // how fast the laser goes
@@ -147,6 +154,13 @@ void keyPressed() { // set repective keys boolean to true if the key is down
 	if(key == 'q' || key == 'Q') {
 		qPressed = true;
 	}
+	if(key == 'i' || key == 'I') {
+		iPressed = true;
+	}
+	if(key == 'p' || key == 'P') {
+		pPressed = true;
+	}
+
 }
 
 void keyReleased() { // if the key is released turn it to false
@@ -161,6 +175,12 @@ void keyReleased() { // if the key is released turn it to false
 	}
 	if(key == 'q' || key == 'Q') {
 		qPressed = false;
+	}
+	if(key == 'i' || key == 'I') {
+		iPressed = false;
+	}
+	if(key == 'p' || key == 'P') {
+		pPressed = false;
 	}
 }
 //----------- control stuff --------------------------

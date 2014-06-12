@@ -16,11 +16,15 @@ public class spaceBattle extends PApplet {
 
 int frameWidth = 1400; // Width of window in passable variable
 int frameHeight = 650; // Height of window in passable variable
-boolean aPressed = false;
-boolean lPressed = false;
-boolean ePressed = false;
-boolean qPressed = false;
 //----
+boolean aPressed = false; // temp fire
+boolean ePressed = false; // raise power
+boolean qPressed = false; // lower power
+//----^ left controls ^----
+boolean lPressed = false;
+boolean iPressed = false;
+boolean pPressed = false;
+//----^ right controls ^----
 Star [] starBg = new Star [100]; // Initialize star background
 //----
 ArrayList <Laser> lasers;
@@ -50,11 +54,14 @@ public void draw() {
 	checkForDelete();
 	moveAll();
 	displayAll();
+
 	if(ePressed) leftShip.raiseLaserPower();
 	if(qPressed) leftShip.lowerLaserPower();
+	if(iPressed) rightShip.raiseLaserPower();
+	if(pPressed) rightShip.lowerLaserPower();
+
 	if(aPressed) fireLeft();
 	if(lPressed) fireRight();
-
 }
 
 
@@ -163,6 +170,13 @@ public void keyPressed() { // set repective keys boolean to true if the key is d
 	if(key == 'q' || key == 'Q') {
 		qPressed = true;
 	}
+	if(key == 'i' || key == 'I') {
+		iPressed = true;
+	}
+	if(key == 'p' || key == 'P') {
+		pPressed = true;
+	}
+
 }
 
 public void keyReleased() { // if the key is released turn it to false
@@ -177,6 +191,12 @@ public void keyReleased() { // if the key is released turn it to false
 	}
 	if(key == 'q' || key == 'Q') {
 		qPressed = false;
+	}
+	if(key == 'i' || key == 'I') {
+		iPressed = false;
+	}
+	if(key == 'p' || key == 'P') {
+		pPressed = false;
 	}
 }
 //----------- control stuff --------------------------
