@@ -13,6 +13,9 @@ Star [] starBg = new Star [100]; // Initialize star background
 //----
 ArrayList <Laser> lasers;
 //----
+Shield leftShield = new Shield("left", frameWidth/6, frameHeight/2);
+Shield rightShield = new Shield("right", frameWidth/6 * 5, frameHeight/2);
+//----
 SpaceShip leftShip = new SpaceShip(0, 0, "left", frameWidth/6); 
 SpaceShip rightShip = new SpaceShip(frameWidth/6 * 5, 0, "right", frameWidth/6 * 5);
 //---- ^ Initialize ships screen position and to proper side using string arguement
@@ -33,7 +36,9 @@ void draw() {
 		starBg[i].moveStar();
 		starBg[i].resetStar();
 	}
+	rightShield.display();
 	rightShip.displayShip();
+	leftShield.display();
 	leftShip.displayShip();
 	checkForDelete();
 	moveAll();
@@ -137,6 +142,30 @@ class Laser {
 }//
 //--------- laser class -----------------------------
 
+//--------- shield class --------------------------------
+class Shield {
+	
+	String side;
+	float x, y, w, h;
+	
+	Shield(String sideIn, float shieldX, float shieldY) {
+		side = sideIn;
+		x = shieldX;
+		y = shieldY;
+		w = 100;
+		h = 700;  
+	}
+
+	void display() {
+		noStroke();
+		fill(0, 100, 200, 75);
+		ellipse(x, y, w, h);
+	}
+
+
+}//
+//--------- shield class --------------------------------
+
 //----------- control stuff --------------------------
 void keyPressed() { // set repective keys boolean to true if the key is down
 	if(key == 'a' || key == 'A') {
@@ -157,7 +186,6 @@ void keyPressed() { // set repective keys boolean to true if the key is down
 	if(key == 'p' || key == 'P') {
 		pPressed = true;
 	}
-
 }
 
 void keyReleased() { // if the key is released turn it to false
@@ -217,6 +245,7 @@ void displayAll() {
 	}
 }
 //--------- laser stuff ---------------------------------
+
 
 //---------------- Star BG Class ------------------------
 class Star {

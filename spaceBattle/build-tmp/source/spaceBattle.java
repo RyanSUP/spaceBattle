@@ -29,6 +29,9 @@ Star [] starBg = new Star [100]; // Initialize star background
 //----
 ArrayList <Laser> lasers;
 //----
+Shield leftShield = new Shield("left", frameWidth/6, frameHeight/2);
+Shield rightShield = new Shield("right", frameWidth/6 * 5, frameHeight/2);
+//----
 SpaceShip leftShip = new SpaceShip(0, 0, "left", frameWidth/6); 
 SpaceShip rightShip = new SpaceShip(frameWidth/6 * 5, 0, "right", frameWidth/6 * 5);
 //---- ^ Initialize ships screen position and to proper side using string arguement
@@ -49,7 +52,9 @@ public void draw() {
 		starBg[i].moveStar();
 		starBg[i].resetStar();
 	}
+	rightShield.display();
 	rightShip.displayShip();
+	leftShield.display();
 	leftShip.displayShip();
 	checkForDelete();
 	moveAll();
@@ -64,9 +69,6 @@ public void draw() {
 	if(lPressed) fireRight();
 }
 
-
-
-
 //------------- Space Ship Class --------------------
 class SpaceShip {
 	float wid; // width of ship determined by parameter
@@ -77,7 +79,7 @@ class SpaceShip {
 		wid = w;
 		shipX = xPos;
 		shipY = yPos;
-		powerAdjustment = 0;
+		powerAdjustment = 0; // how much to adjust power (stroke) by
 		side = sideIn; // screen side
 	}
 	public void displayShip() {
@@ -86,13 +88,13 @@ class SpaceShip {
 		rect(shipX,shipY, wid, height);
 	}
 
-	public void raiseLaserPower() {
+	public void raiseLaserPower() { // raise the power (stroke) of laser
 		powerAdjustment += .25f;
 		powerAdjustment = constrain(powerAdjustment, 0, 5);
 		println(powerAdjustment);
 	}
 
-	public void lowerLaserPower() {
+	public void lowerLaserPower() { // lower the power (stroke) of laser
 		powerAdjustment -= .25f;
 		powerAdjustment = constrain(powerAdjustment, 0, 5);
 		println(powerAdjustment);
@@ -108,11 +110,11 @@ class Laser {
 	float y;
 	float speed;
 	float power; // size of laser
-	float powerAd;
+	float powerAd; // add thenumber from raiseLaserPower() and lowerLaserPower() to the power of the laser
 	String side;
 	boolean del = false; // boolean for deleting lasers from the array list
 
-	Laser(String sideIn, float laserX, float laserY, float adjPower) { // pass through the position of the laser (also later will pass in thickness)
+	Laser(String sideIn, float laserX, float laserY, float adjPower) { // pass through the position of the laser and its power
 		x = laserX;
 		y = laserY;
 		speed = 10; // how fast the laser goes
@@ -156,6 +158,30 @@ class Laser {
 }//
 //--------- laser class -----------------------------
 
+//--------- shield class --------------------------------
+class Shield {
+	
+	String side;
+	float x, y, w, h;
+	
+	Shield(String sideIn, float shieldX, float shieldY) {
+		side = sideIn;
+		x = shieldX;
+		y = shieldY;
+		w = 100;
+		h = 700;  
+	}
+
+	public void display() {
+		noStroke();
+		fill(0, 100, 200, 75);
+		ellipse(x, y, w, h);
+	}
+
+
+}//
+//--------- shield class --------------------------------
+
 //----------- control stuff --------------------------
 public void keyPressed() { // set repective keys boolean to true if the key is down
 	if(key == 'a' || key == 'A') {
@@ -176,7 +202,6 @@ public void keyPressed() { // set repective keys boolean to true if the key is d
 	if(key == 'p' || key == 'P') {
 		pPressed = true;
 	}
-
 }
 
 public void keyReleased() { // if the key is released turn it to false
@@ -211,11 +236,9 @@ public void fireRight() {  // create a laser with these properties if the key is
 	Laser laser = new Laser("right", random(frameWidth/6* 5, frameWidth), random(0, frameHeight), rightShip.powerAdjustment);
 	lasers.add(laser); // add laser to the laser array list
 }
-
 //----------- stuff effected by controls ------------
 
 //--------- laser stuff ---------------------------------
-
 public void moveAll() {
 	for(Laser laser : lasers) {  // for each laser in the array list, move them
 		laser.move();
@@ -238,6 +261,7 @@ public void displayAll() {
 	}
 }
 //--------- laser stuff ---------------------------------
+
 
 //---------------- Star BG Class ------------------------
 class Star {
