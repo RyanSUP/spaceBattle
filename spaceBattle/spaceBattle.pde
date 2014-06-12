@@ -25,14 +25,18 @@
                                                                               
 int frameWidth = 1400; // Width of window in passable variable
 int frameHeight = 650; // Height of window in passable variable
-//----
-boolean aPressed = false; // temp fire
+//---- ALL CONTROLS ARE TEMP
+boolean aPressed = false; // fire
 boolean ePressed = false; // raise power
 boolean qPressed = false; // lower power
+boolean fPressed = false; // raise shield
+boolean sPressed = false; // lower shield
 //----^ left controls ^----
-boolean lPressed = false;
-boolean iPressed = false;
-boolean pPressed = false;
+boolean lPressed = false; // fire
+boolean iPressed = false; // raise power
+boolean pPressed = false; // lower power
+boolean hPressed = false; // raise shield
+boolean kayPressed = false; // lower shield
 //----^ right controls ^----
 Star [] starBg = new Star [100]; // Initialize star background
 //----
@@ -73,12 +77,28 @@ void draw() {
 	if(qPressed) leftShip.lowerLaserPower();
 	if(iPressed) rightShip.raiseLaserPower();
 	if(pPressed) rightShip.lowerLaserPower();
-
+	if(sPressed) leftShield.lowerShieldPower();
+	if(fPressed) leftShield.raiseShieldPower();
+	if(kayPressed) rightShield.lowerShieldPower();
+	if(hPressed) rightShield.raiseShieldPower();
 	if(aPressed) fireLeft();
 	if(lPressed) fireRight();
 }
-
-
+/*
+██╗      █████╗ ███████╗███████╗██████╗     
+██║     ██╔══██╗██╔════╝██╔════╝██╔══██╗    
+██║     ███████║███████╗█████╗  ██████╔╝    
+██║     ██╔══██║╚════██║██╔══╝  ██╔══██╗    
+███████╗██║  ██║███████║███████╗██║  ██║    
+╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝╚═╝  ╚═╝    
+                                            
+███████╗████████╗██╗   ██╗███████╗███████╗  
+██╔════╝╚══██╔══╝██║   ██║██╔════╝██╔════╝  
+███████╗   ██║   ██║   ██║█████╗  █████╗    
+╚════██║   ██║   ██║   ██║██╔══╝  ██╔══╝    
+███████║   ██║   ╚██████╔╝██║     ██║       
+╚══════╝   ╚═╝    ╚═════╝ ╚═╝     ╚═╝       
+  */                                          
 
 //--------- laser stuff ---------------------------------
 void moveAll() {
@@ -113,8 +133,21 @@ void fireRight() {  // create a laser with these properties if the key is presse
 	lasers.add(laser); // add laser to the laser array list
 }
 //--------- laser stuff ---------------------------------
-
-
+/*
+ ██████╗ ██████╗ ███╗   ██╗████████╗██████╗  ██████╗ ██╗         
+██╔════╝██╔═══██╗████╗  ██║╚══██╔══╝██╔══██╗██╔═══██╗██║         
+██║     ██║   ██║██╔██╗ ██║   ██║   ██████╔╝██║   ██║██║         
+██║     ██║   ██║██║╚██╗██║   ██║   ██╔══██╗██║   ██║██║         
+╚██████╗╚██████╔╝██║ ╚████║   ██║   ██║  ██║╚██████╔╝███████╗    
+ ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝ ╚══════╝    
+                                                                 
+███████╗████████╗██╗   ██╗███████╗███████╗                       
+██╔════╝╚══██╔══╝██║   ██║██╔════╝██╔════╝                       
+███████╗   ██║   ██║   ██║█████╗  █████╗                         
+╚════██║   ██║   ██║   ██║██╔══╝  ██╔══╝                         
+███████║   ██║   ╚██████╔╝██║     ██║                            
+╚══════╝   ╚═╝    ╚═════╝ ╚═╝     ╚═╝                            
+                                                                 */
 //----------- control stuff --------------------------
 void keyPressed() { // set repective keys boolean to true if the key is down
 	if(key == 'a' || key == 'A') {
@@ -134,6 +167,18 @@ void keyPressed() { // set repective keys boolean to true if the key is down
 	}
 	if(key == 'p' || key == 'P') {
 		pPressed = true;
+	}
+	if(key == 'k' || key == 'K') {
+		kayPressed = true;
+	}
+	if(key == 'h' || key == 'H') {
+		hPressed = true;
+	}
+	if(key == 's' || key == 'S') {
+		sPressed = true;
+	}
+	if(key == 'f' || key == 'F') {
+		fPressed = true;
 	}
 }
 
@@ -155,6 +200,18 @@ void keyReleased() { // if the key is released turn it to false
 	}
 	if(key == 'p' || key == 'P') {
 		pPressed = false;
+	}
+	if(key == 'k' || key == 'K') {
+		kayPressed = false;
+	}
+	if(key == 'h' || key == 'H') {
+		hPressed = false;
+	}
+	if(key == 's' || key == 'S') {
+		sPressed = false;
+	}
+	if(key == 'f' || key == 'F') {
+		fPressed = false;
 	}
 }
 //----------- control stuff --------------------------

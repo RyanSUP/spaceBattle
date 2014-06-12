@@ -21,7 +21,7 @@ class Laser {
 	String side;
 	boolean del = false; // boolean for deleting lasers from the array list
 
-	Laser(String sideIn, float laserX, float laserY, float adjPower) { // pass through the position of the laser and its power
+	Laser(String sideIn, float laserX, float laserY, float adjPower) { // pass through the position of the laser and its power (power function in spaceship class)
 		x = laserX;
 		y = laserY;
 		speed = 10; // how fast the laser goes
