@@ -16,39 +16,45 @@ public class spaceBattle extends PApplet {
 
 int frameWidth = 1400; // Width of window in passable variable
 int frameHeight = 650; // Height of window in passable variable
-Star [] starTest = new Star [100]; // Initialize star background
-//----
-ArrayList <Laser> lasers;
-
-SpaceShip leftShip = new SpaceShip(0, 0, "left", frameWidth/6); 
-SpaceShip rightShip = new SpaceShip(frameWidth/6 * 5, 0, "right", frameWidth/6 * 5);
 boolean aPressed = false;
 boolean lPressed = false;
 boolean ePressed = false;
+boolean qPressed = false;
+//----
+Star [] starBg = new Star [100]; // Initialize star background
+//----
+ArrayList <Laser> lasers;
+//----
+SpaceShip leftShip = new SpaceShip(0, 0, "left", frameWidth/6); 
+SpaceShip rightShip = new SpaceShip(frameWidth/6 * 5, 0, "right", frameWidth/6 * 5);
 //---- ^ Initialize ships screen position and to proper side using string arguement
+//---- "left" = left side of screen, any other string is right side of screen
 public void setup() {
 	frameRate(60);
 	size(frameWidth,frameHeight);
-	for(int i = 0; i < starTest.length; i++) { // initialize starTest to star class
-		starTest[i] = new Star();
+	for(int i = 0; i < starBg.length; i++) { // initialize starBg to star class
+		starBg[i] = new Star();
 	}
 	lasers = new ArrayList();
 }
 
 public void draw() {
 	background(0);
-	for(int i = 0; i < starTest.length; i++) { // Move star background
-		starTest[i].displayStar();
-		starTest[i].moveStar();
-		starTest[i].resetStar();
+	for(int i = 0; i < starBg.length; i++) { // Move star background
+		starBg[i].displayStar();
+		starBg[i].moveStar();
+		starBg[i].resetStar();
 	}
-	if(aPressed) fireLeft();
 	rightShip.displayShip();
 	leftShip.displayShip();
 	checkForDelete();
 	moveAll();
 	displayAll();
+	if(ePressed) leftShip.raiseLaserPower();
+	if(qPressed) leftShip.lowerLaserPower();
+	if(aPressed) fireLeft();
 	if(lPressed) fireRight();
+
 }
 
 
@@ -58,17 +64,29 @@ public void draw() {
 class SpaceShip {
 	float wid; // width of ship determined by parameter
 	float shipX, shipY; // Ship x and y, determinded by perameter
+	float powerAdjustment;
 	String side; // side the ship is on, used for laser guiding and other stuff
 	SpaceShip(float xPos, float yPos, String sideIn, float w) {
 		wid = w;
 		shipX = xPos;
 		shipY = yPos;
+		powerAdjustment = 0;
 		side = sideIn; // screen side
 	}
 	public void displayShip() {
 		noStroke();
 		fill(150);
 		rect(shipX,shipY, wid, height);
+	}
+
+	public void raiseLaserPower() {
+		powerAdjustment += 1;
+		println(powerAdjustment);
+	}
+
+	public void lowerLaserPower() {
+		powerAdjustment -= 1;
+		println(powerAdjustment);
 	}
 
 }//
@@ -80,24 +98,28 @@ class Laser {
 	float x;
 	float y;
 	float speed;
+	float power; // size of laser
+	float powerAd;
 	String side;
 	boolean del = false; // boolean for deleting lasers from the array list
 
-	Laser(String sideIn, float laserX, float laserY) { // pass through the position of the laser (also later will pass in thickness)
+	Laser(String sideIn, float laserX, float laserY, float adjPower) { // pass through the position of the laser (also later will pass in thickness)
 		x = laserX;
 		y = laserY;
 		speed = 10; // how fast the laser goes
+		power = 3; // defualt power
+		powerAd = adjPower;
 		side = sideIn; // side the laser is on
 	}
 
 	public void display() { // display laser, changes for each side
 		if(side == "left") {
-			strokeWeight(1);
+			strokeWeight(power + powerAd);
 			stroke(255, 0, 0);
 			line(x, y, x+5, y);
 		}
 		else {
-			strokeWeight(1);
+			strokeWeight(power + powerAd);
 			stroke(0, 255, 0);
 			line(x, y, x-5, y);
 		}
@@ -136,6 +158,9 @@ public void keyPressed() { // set repective keys boolean to true if the key is d
 	if(key == 'e' || key == 'E') {
 		ePressed = true;
 	}
+	if(key == 'q' || key == 'Q') {
+		qPressed = true;
+	}
 }
 
 public void keyReleased() { // if the key is released turn it to false
@@ -148,25 +173,24 @@ public void keyReleased() { // if the key is released turn it to false
 	if(key == 'l' || key == 'L') {
 		lPressed = false;
 	}
+	if(key == 'q' || key == 'Q') {
+		qPressed = false;
+	}
 }
+//----------- control stuff --------------------------
 
+//----------- stuff effected by controls ------------
 public void fireLeft() {  // create a laser with these properties if the key is pressed
-	Laser laser = new Laser("left", random(0, frameWidth/6), random(0, frameHeight)); 
+	Laser laser = new Laser("left", random(0, frameWidth/6), random(0, frameHeight), leftShip.powerAdjustment); 
 	lasers.add(laser); // add laser to the laser array list
 }
 
 public void fireRight() {  // create a laser with these properties if the key is pressed
-	Laser laser = new Laser("right", random(frameWidth/6* 5, frameWidth), random(0, frameHeight));
+	Laser laser = new Laser("right", random(frameWidth/6* 5, frameWidth), random(0, frameHeight), rightShip.powerAdjustment);
 	lasers.add(laser); // add laser to the laser array list
 }
 
-
-
-
-
-
-
-//----------- control stuff --------------------------
+//----------- stuff effected by controls ------------
 
 //--------- laser stuff ---------------------------------
 
