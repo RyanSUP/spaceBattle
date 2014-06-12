@@ -22,6 +22,9 @@ ArrayList <Laser> lasers;
 
 SpaceShip leftShip = new SpaceShip(0, 0, "left", frameWidth/6); 
 SpaceShip rightShip = new SpaceShip(frameWidth/6 * 5, 0, "right", frameWidth/6 * 5);
+boolean aPressed = false;
+boolean lPressed = false;
+boolean ePressed = false;
 //---- ^ Initialize ships screen position and to proper side using string arguement
 public void setup() {
 	frameRate(60);
@@ -39,11 +42,13 @@ public void draw() {
 		starTest[i].moveStar();
 		starTest[i].resetStar();
 	}
+	if(aPressed) fireLeft();
 	rightShip.displayShip();
 	leftShip.displayShip();
 	checkForDelete();
 	moveAll();
 	displayAll();
+	if(lPressed) fireRight();
 }
 
 
@@ -76,16 +81,16 @@ class Laser {
 	float y;
 	float speed;
 	String side;
-	boolean del = false;
+	boolean del = false; // boolean for deleting lasers from the array list
 
-	Laser(String sideIn, float laserX, float laserY) {
+	Laser(String sideIn, float laserX, float laserY) { // pass through the position of the laser (also later will pass in thickness)
 		x = laserX;
 		y = laserY;
-		speed = 10;
-		side = sideIn;
+		speed = 10; // how fast the laser goes
+		side = sideIn; // side the laser is on
 	}
 
-	public void display() {
+	public void display() { // display laser, changes for each side
 		if(side == "left") {
 			strokeWeight(1);
 			stroke(255, 0, 0);
@@ -98,16 +103,16 @@ class Laser {
 		}
 	}
 
-	public void move() {
+	public void move() { // move the laser
 		if(side == "left") {
-			if(x < frameWidth/6 *5) {
-				x += speed;
+			if(x < frameWidth/6 *5) { // if it isnt at the other base yet, 
+				x += speed; // move the laser
 			}
 			else {
-				del = true;
+				del = true;  // if it hits the other ship set delete boolean to true
 			}
 		}
-		else {
+		else {  // same as ^ but for opposite side
 			if(x > frameWidth/6) {
 				x -= speed;
 			}
@@ -120,37 +125,69 @@ class Laser {
 }//
 //--------- laser class -----------------------------
 
-//--------- laser stuff ---------------------------------
-public void keyPressed() {
+//----------- control stuff --------------------------
+public void keyPressed() { // set repective keys boolean to true if the key is down
 	if(key == 'a' || key == 'A') {
-		Laser laser = new Laser("left", random(0, frameWidth/6), random(0, frameHeight));
-		lasers.add(laser);
+		aPressed = true;
 	}
-	else if(key == 'l' || key == 'L') {
-		Laser laser = new Laser("right", random(frameWidth/6* 5, frameWidth), random(0, frameHeight));
-		lasers.add(laser);
+	if(key == 'l' || key == 'L') {
+		lPressed = true;
+	}
+	if(key == 'e' || key == 'E') {
+		ePressed = true;
 	}
 }
 
+public void keyReleased() { // if the key is released turn it to false
+	if(key == 'e' || key == 'E') {
+		ePressed = false;
+	}
+	if(key == 'a' || key == 'A') {
+		aPressed = false;
+	}
+	if(key == 'l' || key == 'L') {
+		lPressed = false;
+	}
+}
+
+public void fireLeft() {  // create a laser with these properties if the key is pressed
+	Laser laser = new Laser("left", random(0, frameWidth/6), random(0, frameHeight)); 
+	lasers.add(laser); // add laser to the laser array list
+}
+
+public void fireRight() {  // create a laser with these properties if the key is pressed
+	Laser laser = new Laser("right", random(frameWidth/6* 5, frameWidth), random(0, frameHeight));
+	lasers.add(laser); // add laser to the laser array list
+}
+
+
+
+
+
+
+
+//----------- control stuff --------------------------
+
+//--------- laser stuff ---------------------------------
+
 public void moveAll() {
-	//println(lasers.size());
-	for(Laser laser : lasers) {
+	for(Laser laser : lasers) {  // for each laser in the array list, move them
 		laser.move();
 	}
 }
 
 public void checkForDelete() {
-	for(int i = 0; i < lasers.size(); i++) {
-		Laser thisLaser = lasers.get(i);
-		if(thisLaser.del) {
-			lasers.remove(i);
-			break;
+	for(int i = 0; i < lasers.size(); i++) { // search through the array list
+		Laser thisLaser = lasers.get(i); // creat a laser that is a dublicate of the lasers in the game
+		if(thisLaser.del) { // if the laser duplicate has the delete property
+			lasers.remove(i); // remove the original laser from the game
+			break; // stop the code from unneccisary checking
 		}
 	}
 }
 
 public void displayAll() {
-	for(Laser laser : lasers) {
+	for(Laser laser : lasers) { // for each laser in the array list, display them
 		laser.display();
 	}
 }

@@ -6,6 +6,9 @@ ArrayList <Laser> lasers;
 
 SpaceShip leftShip = new SpaceShip(0, 0, "left", frameWidth/6); 
 SpaceShip rightShip = new SpaceShip(frameWidth/6 * 5, 0, "right", frameWidth/6 * 5);
+boolean aPressed = false;
+boolean lPressed = false;
+boolean ePressed = false;
 //---- ^ Initialize ships screen position and to proper side using string arguement
 void setup() {
 	frameRate(60);
@@ -28,6 +31,8 @@ void draw() {
 	checkForDelete();
 	moveAll();
 	displayAll();
+	if(aPressed) fireLeft();
+	if(lPressed) fireRight();
 }
 
 
@@ -105,18 +110,39 @@ class Laser {
 //--------- laser class -----------------------------
 
 //----------- control stuff --------------------------
-void keyPressed() { // test for shooting lasers
+void keyPressed() { // set repective keys boolean to true if the key is down
 	if(key == 'a' || key == 'A') {
-		Laser laser = new Laser("left", random(0, frameWidth/6), random(0, frameHeight)); 
-		lasers.add(laser); // add laser to the laser array list
-	} // create a laser with these properties if the key is pressed
-	else if(key == 'l' || key == 'L') {
-		Laser laser = new Laser("right", random(frameWidth/6* 5, frameWidth), random(0, frameHeight));
-		lasers.add(laser); // add laser to the laser array list
+		aPressed = true;
+	}
+	if(key == 'l' || key == 'L') {
+		lPressed = true;
+	}
+	if(key == 'e' || key == 'E') {
+		ePressed = true;
 	}
 }
 
+void keyReleased() { // if the key is released turn it to false
+	if(key == 'e' || key == 'E') {
+		ePressed = false;
+	}
+	if(key == 'a' || key == 'A') {
+		aPressed = false;
+	}
+	if(key == 'l' || key == 'L') {
+		lPressed = false;
+	}
+}
 
+void fireLeft() {  // create a laser with these properties if the key is pressed
+	Laser laser = new Laser("left", random(0, frameWidth/6), random(0, frameHeight)); 
+	lasers.add(laser); // add laser to the laser array list
+}
+
+void fireRight() {  // create a laser with these properties if the key is pressed
+	Laser laser = new Laser("right", random(frameWidth/6* 5, frameWidth), random(0, frameHeight));
+	lasers.add(laser); // add laser to the laser array list
+}
 
 //----------- control stuff --------------------------
 
