@@ -29,7 +29,8 @@ class Shield {
 	void display() {
 		noStroke();
 		fill(0, 100, 200, shieldPower + powerAdjustment*70);
-		ellipse(x, y, w, h);
+		rectMode(CENTER);
+		rect(x, y, w, h);
 	}
 	
 	void raiseShieldPower() { // raise the power (stroke) of laser

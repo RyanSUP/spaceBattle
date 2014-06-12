@@ -326,8 +326,9 @@ class Shield {
 
 	public void display() {
 		noStroke();
-		fill(0, 100, 200, shieldPower + powerAdjustment*70);
-		ellipse(x, y, w, h);
+		fill(0, 100, 200, shieldPower*45 + powerAdjustment*45);
+		rectMode(CENTER);
+		rect(x, y, w, h);
 	}
 	
 	public void raiseShieldPower() { // raise the power (stroke) of laser
@@ -383,6 +384,7 @@ class SpaceShip {
 	public void displayShip() {
 		noStroke();
 		fill(150);
+		rectMode(CORNER);
 		rect(shipX,shipY, wid, height);
 	}
 

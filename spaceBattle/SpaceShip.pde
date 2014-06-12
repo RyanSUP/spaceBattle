@@ -39,6 +39,7 @@ class SpaceShip {
 	void displayShip() {
 		noStroke();
 		fill(150);
+		rectMode(CORNER);
 		rect(shipX,shipY, wid, height);
 	}
 
