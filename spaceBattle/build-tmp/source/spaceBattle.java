@@ -39,8 +39,8 @@ public void draw() {
 		starTest[i].moveStar();
 		starTest[i].resetStar();
 	}
-	leftShip.displayShip();
 	rightShip.displayShip();
+	leftShip.displayShip();
 	checkForDelete();
 	moveAll();
 	displayAll();
@@ -87,12 +87,15 @@ class Laser {
 
 	public void display() {
 		if(side == "left") {
+			strokeWeight(1);
 			stroke(255, 0, 0);
+			line(x, y, x+5, y);
 		}
 		else {
+			strokeWeight(1);
 			stroke(0, 255, 0);
+			line(x, y, x-5, y);
 		}
-		point(x, y);
 	}
 
 	public void move() {
@@ -119,12 +122,12 @@ class Laser {
 
 //--------- laser stuff ---------------------------------
 public void keyPressed() {
-	while(key == 'a' || key == 'A') {
+	if(key == 'a' || key == 'A') {
 		Laser laser = new Laser("left", random(0, frameWidth/6), random(0, frameHeight));
 		lasers.add(laser);
 	}
-	while(key == 'l' || key == 'L') {
-		Laser laser = new Laser("right", random(frameWidth/6* 5, frameWidth/6), random(0, frameHeight));
+	else if(key == 'l' || key == 'L') {
+		Laser laser = new Laser("right", random(frameWidth/6* 5, frameWidth), random(0, frameHeight));
 		lasers.add(laser);
 	}
 }
