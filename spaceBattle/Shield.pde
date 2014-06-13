@@ -14,7 +14,7 @@
 class Shield {
 	
 	String side;
-	float x, y, w, h, shieldPower, powerAdjustment;
+	float x, y, w, h, shieldPower, powerAdjustment, shieldStr;
 	
 	Shield(String sideIn, float shieldX, float shieldY) {
 		side = sideIn;
@@ -36,12 +36,13 @@ class Shield {
 	void raiseShieldPower() { // raise the power (stroke) of laser
 		powerAdjustment += .25;
 		powerAdjustment = constrain(powerAdjustment, 0, 5);
-		println(powerAdjustment);
+		shieldStr = shieldPower + powerAdjustment;
 	}
 
 	void lowerShieldPower() { // lower the power (stroke) of laser
 		powerAdjustment -= .25;
 		powerAdjustment = constrain(powerAdjustment, 0, 5);
-		println(powerAdjustment);
+	    shieldStr = shieldPower + powerAdjustment;
+	
 	}
 }//

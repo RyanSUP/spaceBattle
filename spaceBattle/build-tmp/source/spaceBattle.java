@@ -250,8 +250,9 @@ class Laser {
 	float y;
 	float speed;
 	float power; // size of laser
-	float powerAd; // add thenumber from raiseLaserPower() and lowerLaserPower() to the power of the laser
+	float powerAdd; // add thenumber from raiseLaserPower() and lowerLaserPower() to the power of the laser
 	String side;
+	float laserStr;
 	boolean del = false; // boolean for deleting lasers from the array list
 
 	Laser(String sideIn, float laserX, float laserY, float adjPower) { // pass through the position of the laser and its power (power function in spaceship class)
@@ -259,21 +260,23 @@ class Laser {
 		y = laserY;
 		speed = 10; // how fast the laser goes
 		power = 3; // defualt power
-		powerAd = adjPower;
+		powerAdd = adjPower;
 		side = sideIn; // side the laser is on
+		laserStr = power + powerAdd;
 	}
 
 	public void display() { // display laser, changes for each side
 		if(side == "left") {
-			strokeWeight(power + powerAd);
-			stroke(255, 0, 0);
+			strokeWeight(power + powerAdd);
+			stroke(255, 0, 0, 150);
 			line(x, y, x+5, y);
 		}
 		else {
-			strokeWeight(power + powerAd);
-			stroke(0, 255, 0);
+			strokeWeight(power + powerAdd);
+			stroke(0, 255, 0, 150);
 			line(x, y, x-5, y);
 		}
+		//println(laserStr);
 	}
 
 	public void move() { // move the laser
@@ -312,7 +315,7 @@ class Laser {
 class Shield {
 	
 	String side;
-	float x, y, w, h, shieldPower, powerAdjustment;
+	float x, y, w, h, shieldPower, powerAdjustment, shieldStr;
 	
 	Shield(String sideIn, float shieldX, float shieldY) {
 		side = sideIn;
@@ -322,11 +325,13 @@ class Shield {
 		h = 700; 
 		shieldPower = 3; 
 		powerAdjustment = 0;
+		shieldStr = shieldPower + powerAdjustment;
 	}
 
 	public void display() {
+		println(shieldStr);
 		noStroke();
-		fill(0, 100, 200, shieldPower*45 + powerAdjustment*45);
+		fill(0, 100, 200, shieldPower + powerAdjustment*70);
 		rectMode(CENTER);
 		rect(x, y, w, h);
 	}
@@ -334,13 +339,13 @@ class Shield {
 	public void raiseShieldPower() { // raise the power (stroke) of laser
 		powerAdjustment += .25f;
 		powerAdjustment = constrain(powerAdjustment, 0, 5);
-		println(powerAdjustment);
 	}
 
 	public void lowerShieldPower() { // lower the power (stroke) of laser
 		powerAdjustment -= .25f;
 		powerAdjustment = constrain(powerAdjustment, 0, 5);
-		println(powerAdjustment);
+	    //shieldStr = shieldPower + powerAdjustment;
+	
 	}
 }//
 /*
