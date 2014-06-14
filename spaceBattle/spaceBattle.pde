@@ -112,7 +112,7 @@ void checkForDelete() {
 		Laser thisLaser = lasers.get(i); // creat a laser that is a dublicate of the lasers in the game
 		if(thisLaser.del) { // if the laser duplicate has the delete property
 			lasers.remove(i); // remove the original laser from the game
-			break; // stop the code from unneccisary checking
+			checkForDelete(); // call this function again to delete some more
 		}
 	}
 }
