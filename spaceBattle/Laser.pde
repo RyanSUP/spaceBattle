@@ -50,6 +50,9 @@ class Laser {
 		if(side == "left") {
 			if(x < frameWidth/6 *5) { // if it isnt at the other base yet, 
 				x += speed; // move the laser
+				if(x > frameWidth/6 * 5) {
+					x = frameWidth/6 * 5;
+				}
 			}
 			else {
 				del = true;  // if it hits the other ship set delete boolean to true
@@ -58,6 +61,9 @@ class Laser {
 		else {  // same as ^ but for opposite side
 			if(x > frameWidth/6) {
 				x -= speed;
+				if(x < frameWidth/6) {
+					x = frameWidth/6;
+				}
 			}
 			else {
 				del = true;	
