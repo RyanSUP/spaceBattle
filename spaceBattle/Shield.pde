@@ -49,7 +49,8 @@ class Shield {
 	void checkForLasers() {
 		for(Laser laser: lasers) {
 			if(laser.side == "left") {
-				if(laser.x >= rightShield.x - rightShield.w) {
+				if(laser.x >= rightShield.x - rightShield.w/2 && laser.hit == false) {
+					laser.hit = true;
 					println(
 					"Laser Dmg : " + laser.laserStr +
 					" // " + "Shield Power : " + shieldStr + " // " +  

@@ -20,6 +20,7 @@ class Laser {
 	float powerAdd; // add thenumber from raiseLaserPower() and lowerLaserPower() to the power of the laser
 	String side;
 	float laserStr;
+	boolean hit = false;
 	boolean del = false; // boolean for deleting lasers from the array list
 
 	Laser(String sideIn, float laserX, float laserY, float adjPower) { // pass through the position of the laser and its power (power function in spaceship class)

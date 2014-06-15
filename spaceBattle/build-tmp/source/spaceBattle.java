@@ -304,13 +304,6 @@ public float getDmg(float laserStr, float shieldStr) {
 	}
 	return totalDmg;
 }
-public float getDmgTest(float laser, float shield) {
-	float attack = laser;
-	float defense = shield;
-	float totalDmg = attack - defense;
-	return totalDmg;
-	
-}
 /*
  \u2584            \u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584  \u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584  \u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584  \u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584 
 \u2590\u2591\u258c          \u2590\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u258c\u2590\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u258c\u2590\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u258c\u2590\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u258c
@@ -333,6 +326,7 @@ class Laser {
 	float powerAdd; // add thenumber from raiseLaserPower() and lowerLaserPower() to the power of the laser
 	String side;
 	float laserStr;
+	boolean hit = false;
 	boolean del = false; // boolean for deleting lasers from the array list
 
 	Laser(String sideIn, float laserX, float laserY, float adjPower) { // pass through the position of the laser and its power (power function in spaceship class)
@@ -430,7 +424,8 @@ class Shield {
 	public void checkForLasers() {
 		for(Laser laser: lasers) {
 			if(laser.side == "left") {
-				if(laser.x >= rightShield.x - rightShield.w) {
+				if(laser.x >= rightShield.x - rightShield.w/2 && laser.hit == false) {
+					laser.hit = true;
 					println(
 					"Laser Dmg : " + laser.laserStr +
 					" // " + "Shield Power : " + shieldStr + " // " +  
