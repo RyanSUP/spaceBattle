@@ -29,7 +29,7 @@ class Laser {
 		power = 3; // defualt power
 		powerAdd = adjPower;
 		side = sideIn; // side the laser is on
-		laserStr = power + powerAdd;
+		laserStr = power + powerAdd; // str of laser
 	}
 
 	void display() { // display laser, changes for each side

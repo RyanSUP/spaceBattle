@@ -68,23 +68,28 @@ SpaceShip rightShip = new SpaceShip(frameWidth/6 * 5, 0, "right", frameWidth/6 *
 public void setup() {
 	frameRate(60);
 	size(frameWidth,frameHeight);
+	
 	for(int i = 0; i < starBg.length; i++) { // initialize starBg to star class
 		starBg[i] = new Star();
 	}
+	
 	lasers = new ArrayList();
 }
 
 public void draw() {
 	background(0);
+	
 	for(int i = 0; i < starBg.length; i++) { // Move star background
 		starBg[i].displayStar();
 		starBg[i].moveStar();
 		starBg[i].resetStar();
 	}
+	
 	rightShield.display();
 	rightShip.displayShip();
 	leftShield.display();
 	leftShip.displayShip();
+	
 	checkForDelete();
 	moveAll();
 	displayAll();
@@ -262,7 +267,7 @@ class Laser {
 		power = 3; // defualt power
 		powerAdd = adjPower;
 		side = sideIn; // side the laser is on
-		laserStr = power + powerAdd;
+		laserStr = power + powerAdd; // str of laser
 	}
 
 	public void display() { // display laser, changes for each side
@@ -325,11 +330,9 @@ class Shield {
 		h = 700; 
 		shieldPower = 3; 
 		powerAdjustment = 0;
-		shieldStr = shieldPower + powerAdjustment;
 	}
 
 	public void display() {
-		println(shieldStr);
 		noStroke();
 		fill(0, 100, 200, shieldPower + powerAdjustment*70);
 		rectMode(CENTER);
@@ -339,15 +342,45 @@ class Shield {
 	public void raiseShieldPower() { // raise the power (stroke) of laser
 		powerAdjustment += .25f;
 		powerAdjustment = constrain(powerAdjustment, 0, 5);
+		shieldStr = shieldPower + powerAdjustment;// strength of shield
 	}
 
 	public void lowerShieldPower() { // lower the power (stroke) of laser
 		powerAdjustment -= .25f;
 		powerAdjustment = constrain(powerAdjustment, 0, 5);
-	    //shieldStr = shieldPower + powerAdjustment;
+	    shieldStr = shieldPower + powerAdjustment;  // strength of shield
 	
 	}
+/*
+	void checkForLasers() {
+		for(Laser laser: lasers) {
+			if(laser.side == side) {
+				if(laser.x >= x + w) {
+					getDmg(laser.laserStr, shieldStr);
+				}
+			}
+		}
+	} */
 }//
+
+public float getDmg(float laserStr, float shieldStr) {
+	float totalDmg = 0;
+	float attack = laserStr;
+	float defense = shieldStr;
+
+	if(defense == 8 && attack == 3) {
+		println("perfect hit");
+	}
+
+	if(defense == 7 && attack == 4) {
+		println("perfect hit");
+	}
+	
+	if(defense == 6 && attack == 5) {
+		println("perfect hit");
+	}
+}
+
 /*
  \u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584  \u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584  \u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584  \u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584 
 \u2590\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u258c\u2590\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u258c\u2590\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u258c\u2590\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u258c

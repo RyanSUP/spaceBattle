@@ -52,23 +52,28 @@ SpaceShip rightShip = new SpaceShip(frameWidth/6 * 5, 0, "right", frameWidth/6 *
 void setup() {
 	frameRate(60);
 	size(frameWidth,frameHeight);
+	
 	for(int i = 0; i < starBg.length; i++) { // initialize starBg to star class
 		starBg[i] = new Star();
 	}
+	
 	lasers = new ArrayList();
 }
 
 void draw() {
 	background(0);
+	
 	for(int i = 0; i < starBg.length; i++) { // Move star background
 		starBg[i].displayStar();
 		starBg[i].moveStar();
 		starBg[i].resetStar();
 	}
+	
 	rightShield.display();
 	rightShip.displayShip();
 	leftShield.display();
 	leftShip.displayShip();
+	
 	checkForDelete();
 	moveAll();
 	displayAll();
