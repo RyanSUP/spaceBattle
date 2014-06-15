@@ -14,7 +14,7 @@
 class Shield {
 	
 	String side;
-	float x, y, w, h, shieldPower, powerAdjustment, shieldStr;
+	float x, y, w, h, shieldPower, shieldStr;
 	
 	Shield(String sideIn, float shieldX, float shieldY) {
 		side = sideIn;
@@ -22,28 +22,28 @@ class Shield {
 		y = shieldY;
 		w = 100;
 		h = 700; 
-		shieldPower = 3; 
-		powerAdjustment = 0;
+		shieldPower = 3;
 	}
 
 	void display() {
 		noStroke();
-		fill(0, 100, 200, shieldPower + powerAdjustment*70);
+		if(side == "left") {
+			fill(0, 100, 200, shieldPower + leftShip.shieldAdjustment*70);
+		}
+		else {
+			fill(0, 100, 200, shieldPower + rightShip.shieldAdjustment*70);
+		}
 		rectMode(CENTER);
 		rect(x, y, w, h);
 	}
-	
-	void raiseShieldPower() { // raise the power (stroke) of laser
-		powerAdjustment += .25;
-		powerAdjustment = constrain(powerAdjustment, 0, 5);
-		shieldStr = shieldPower + powerAdjustment;// strength of shield
-	}
 
-	void lowerShieldPower() { // lower the power (stroke) of laser
-		powerAdjustment -= .25;
-		powerAdjustment = constrain(powerAdjustment, 0, 5);
-	    shieldStr = shieldPower + powerAdjustment;  // strength of shield
-	
+	void updatePower() {
+		if(side == "left") {
+			shieldStr = shieldPower + leftShip.shieldAdjustment;
+		}
+		else {
+			shieldStr = shieldPower + rightShip.shieldAdjustment;
+		}
 	}
 
 	void checkForLasers() {
@@ -74,7 +74,7 @@ float getDmg(float laserStr, float shieldStr) {
 	*/
 	if(defense > mid) {
 		blockValue = defense - mid;
-		if(attack =< mid) {
+		if(attack <= mid) {
 			attackValue = mid - attack;
 			totalDmg = blockValue + attackValue;
 			//dOf 8: 8 - mid = 2.5

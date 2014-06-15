@@ -68,9 +68,10 @@ void draw() {
 		starBg[i].moveStar();
 		starBg[i].resetStar();
 	}
-	
+	rightShield.updatePower();
 	rightShield.display();
 	rightShip.displayShip();
+	leftShield.updatePower();
 	leftShield.display();
 	leftShip.displayShip();
 	
@@ -82,10 +83,10 @@ void draw() {
 	if(qPressed) leftShip.lowerLaserPower();
 	if(iPressed) rightShip.raiseLaserPower();
 	if(pPressed) rightShip.lowerLaserPower();
-	if(sPressed) leftShield.lowerShieldPower();
-	if(fPressed) leftShield.raiseShieldPower();
-	if(kayPressed) rightShield.lowerShieldPower();
-	if(hPressed) rightShield.raiseShieldPower();
+	if(sPressed) leftShip.lowerShieldPower();
+	if(fPressed) leftShip.raiseShieldPower();
+	if(kayPressed) rightShip.lowerShieldPower();
+	if(hPressed) rightShip.raiseShieldPower();
 	if(aPressed) fireLeft();
 	if(lPressed) fireRight();
 }
@@ -129,12 +130,12 @@ void displayAll() {
 }
 
 void fireLeft() {  // create a laser with these properties if the key is pressed
-	Laser laser = new Laser("left", random(0, frameWidth/6), random(0, frameHeight), leftShip.powerAdjustment); 
+	Laser laser = new Laser("left", random(0, frameWidth/6), random(0, frameHeight), leftShip.laserAdjustment); 
 	lasers.add(laser); // add laser to the laser array list
 }
 
 void fireRight() {  // create a laser with these properties if the key is pressed
-	Laser laser = new Laser("right", random(frameWidth/6* 5, frameWidth), random(0, frameHeight), rightShip.powerAdjustment);
+	Laser laser = new Laser("right", random(frameWidth/6* 5, frameWidth), random(0, frameHeight), rightShip.laserAdjustment);
 	lasers.add(laser); // add laser to the laser array list
 }
 //--------- laser stuff ---------------------------------

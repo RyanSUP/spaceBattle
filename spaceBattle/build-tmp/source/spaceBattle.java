@@ -84,9 +84,10 @@ public void draw() {
 		starBg[i].moveStar();
 		starBg[i].resetStar();
 	}
-	
+	rightShield.updatePower();
 	rightShield.display();
 	rightShip.displayShip();
+	leftShield.updatePower();
 	leftShield.display();
 	leftShip.displayShip();
 	
@@ -98,10 +99,10 @@ public void draw() {
 	if(qPressed) leftShip.lowerLaserPower();
 	if(iPressed) rightShip.raiseLaserPower();
 	if(pPressed) rightShip.lowerLaserPower();
-	if(sPressed) leftShield.lowerShieldPower();
-	if(fPressed) leftShield.raiseShieldPower();
-	if(kayPressed) rightShield.lowerShieldPower();
-	if(hPressed) rightShield.raiseShieldPower();
+	if(sPressed) leftShip.lowerShieldPower();
+	if(fPressed) leftShip.raiseShieldPower();
+	if(kayPressed) rightShip.lowerShieldPower();
+	if(hPressed) rightShip.raiseShieldPower();
 	if(aPressed) fireLeft();
 	if(lPressed) fireRight();
 }
@@ -145,12 +146,12 @@ public void displayAll() {
 }
 
 public void fireLeft() {  // create a laser with these properties if the key is pressed
-	Laser laser = new Laser("left", random(0, frameWidth/6), random(0, frameHeight), leftShip.powerAdjustment); 
+	Laser laser = new Laser("left", random(0, frameWidth/6), random(0, frameHeight), leftShip.laserAdjustment); 
 	lasers.add(laser); // add laser to the laser array list
 }
 
 public void fireRight() {  // create a laser with these properties if the key is pressed
-	Laser laser = new Laser("right", random(frameWidth/6* 5, frameWidth), random(0, frameHeight), rightShip.powerAdjustment);
+	Laser laser = new Laser("right", random(frameWidth/6* 5, frameWidth), random(0, frameHeight), rightShip.laserAdjustment);
 	lasers.add(laser); // add laser to the laser array list
 }
 //--------- laser stuff ---------------------------------
@@ -320,7 +321,7 @@ class Laser {
 class Shield {
 	
 	String side;
-	float x, y, w, h, shieldPower, powerAdjustment, shieldStr;
+	float x, y, w, h, shieldPower, shieldStr;
 	
 	Shield(String sideIn, float shieldX, float shieldY) {
 		side = sideIn;
@@ -328,57 +329,97 @@ class Shield {
 		y = shieldY;
 		w = 100;
 		h = 700; 
-		shieldPower = 3; 
-		powerAdjustment = 0;
+		shieldPower = 3;
 	}
 
 	public void display() {
 		noStroke();
-		fill(0, 100, 200, shieldPower + powerAdjustment*70);
+		if(side == "left") {
+			fill(0, 100, 200, shieldPower + leftShip.shieldAdjustment*70);
+		}
+		else {
+			fill(0, 100, 200, shieldPower + rightShip.shieldAdjustment*70);
+		}
 		rectMode(CENTER);
 		rect(x, y, w, h);
 	}
-	
-	public void raiseShieldPower() { // raise the power (stroke) of laser
-		powerAdjustment += .25f;
-		powerAdjustment = constrain(powerAdjustment, 0, 5);
-		shieldStr = shieldPower + powerAdjustment;// strength of shield
+
+	public void updatePower() {
+		if(side == "left") {
+			shieldStr = shieldPower + leftShip.shieldAdjustment;
+		}
+		else {
+			shieldStr = shieldPower + rightShip.shieldAdjustment;
+		}
 	}
 
-	public void lowerShieldPower() { // lower the power (stroke) of laser
-		powerAdjustment -= .25f;
-		powerAdjustment = constrain(powerAdjustment, 0, 5);
-	    shieldStr = shieldPower + powerAdjustment;  // strength of shield
-	
-	}
-/*
-	void checkForLasers() {
+	public void checkForLasers() {
 		for(Laser laser: lasers) {
 			if(laser.side == side) {
 				if(laser.x >= x + w) {
-					getDmg(laser.laserStr, shieldStr);
+					println(
+					getDmg(laser.laserStr, shieldStr)
+					);
 				}
 			}
 		}
-	} */
+	}
 }//
 
 public float getDmg(float laserStr, float shieldStr) {
 	float totalDmg = 0;
 	float attack = laserStr;
 	float defense = shieldStr;
-
-	if(defense == 8 && attack == 3) {
-		println("perfect hit");
+	float blockValue;
+	float attackValue;
+	float mid = 5.50f;
+	/*
+	The values of shield and laser are between 3 and 8.  
+	If a small valued laser hits a large valued shield, the damage should be a large number.
+	If a large valued laser hits a small valued shield, the damage shouild be a large number.
+	Basically, the greater distance between numbers, the more damage.
+	*/
+	if(defense > mid) {
+		blockValue = defense - mid;
+		if(attack <= mid) {
+			attackValue = mid - attack;
+			totalDmg = blockValue + attackValue;
+			//dOf 8: 8 - mid = 2.5
+			//aOf 5: mid - 5 = .5  total dmg = 3
+			//aOf 4: mid - 4 = 1.5  total dmg = 4;
+			//aOf 3: mid - 3 = 2.5  total dmg = 5
+			//total dmg = dOf + aOf
+		}
+		else {
+			attackValue = attack - mid;
+			totalDmg = blockValue - attackValue;
+			//dOf 8: 8 - mid = 2.5
+			//aOf 8:  8 - mid = 2.5 // total 0
+			//aOf 7: 7 - mid = 1.5 // total 1
+			//aOf 6: 6 - mid = .5   // total 2
+			//total dmg = dOF - aOf
+		}
 	}
-
-	if(defense == 7 && attack == 4) {
-		println("perfect hit");
+	if(defense <= mid) {
+		blockValue = mid - defense;
+		if(attack > mid) {
+			attackValue = attack - mid;
+			totalDmg = blockValue + attackValue;
+			//dOf 3:  mid - 3 = 2.5
+			//aOf 8:  8 - mid = 2.5 = 5
+			//aOf 7: 7 - mid = 1.5  total =4
+			//aOf 6: 6 - mid = .5 total = 3
+		}
+		else {
+			attackValue = mid - attack;
+			totalDmg = blockValue - attackValue;
+			//dOf 3: mid - 3 = 2.5	
+			//aOf 5: mid - 5 = .5 total = 2
+			//aOf 4: mid - 4 = 1.5 total = 1
+			//aOf 3: mid - 3 = 2.5 total = 0 
+		}
 	}
-	
-	if(defense == 6 && attack == 5) {
-		println("perfect hit");
-	}
+	return totalDmg;
 }
 
 /*
@@ -409,14 +450,15 @@ public float getDmg(float laserStr, float shieldStr) {
 class SpaceShip {
 	float wid; // width of ship determined by parameter
 	float shipX, shipY; // Ship x and y, determinded by perameter
-	float powerAdjustment;
+	float laserAdjustment, shieldAdjustment;
 	String side; // side the ship is on, used for laser guiding and other stuff
 
 	SpaceShip(float xPos, float yPos, String sideIn, float w) {
 		wid = w;
 		shipX = xPos;
 		shipY = yPos;
-		powerAdjustment = 0; // how much to adjust power (stroke) by
+		laserAdjustment = 0; // how much to adjust power (stroke) by
+		shieldAdjustment = 0;
 		side = sideIn; // screen side
 	}
 	public void displayShip() {
@@ -427,13 +469,24 @@ class SpaceShip {
 	}
 
 	public void raiseLaserPower() { // raise the power (stroke) of laser
-		powerAdjustment += .25f;
-		powerAdjustment = constrain(powerAdjustment, 0, 5);
+		laserAdjustment += .25f;
+		laserAdjustment = constrain(laserAdjustment, 0, 5);
 	}
 
 	public void lowerLaserPower() { // lower the power (stroke) of laser
-		powerAdjustment -= .25f;
-		powerAdjustment = constrain(powerAdjustment, 0, 5);
+		laserAdjustment -= .25f;
+		laserAdjustment = constrain(laserAdjustment, 0, 5);
+	}
+
+
+	public void raiseShieldPower() { // raise the power (stroke) of laser
+		shieldAdjustment += .25f;
+		shieldAdjustment = constrain(shieldAdjustment, 0, 5);
+	}
+
+	public void lowerShieldPower() { // lower the power (stroke) of laser
+		shieldAdjustment -= .25f;
+		shieldAdjustment = constrain(shieldAdjustment, 0, 5);
 	}
 }
 /*
