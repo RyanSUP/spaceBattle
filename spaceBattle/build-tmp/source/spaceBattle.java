@@ -87,9 +87,12 @@ public void draw() {
 	rightShield.updatePower();
 	rightShield.display();
 	rightShip.displayShip();
+	rightShield.checkForLasers();
 	leftShield.updatePower();
 	leftShield.display();
 	leftShip.displayShip();
+	leftShield.checkForLasers();
+
 	
 	checkForDelete();
 	moveAll();
@@ -238,6 +241,77 @@ public void keyReleased() { // if the key is released turn it to false
 }
 //----------- control stuff --------------------------
 /*
+\u2588\u2588\u2588\u2588\u2588\u2588\u2557 \u2588\u2588\u2588\u2557   \u2588\u2588\u2588\u2557 \u2588\u2588\u2588\u2588\u2588\u2588\u2557      \u2588\u2588\u2588\u2588\u2588\u2588\u2557 \u2588\u2588\u2588\u2588\u2588\u2557 \u2588\u2588\u2557      \u2588\u2588\u2588\u2588\u2588\u2588\u2557
+\u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2557 \u2588\u2588\u2588\u2588\u2551\u2588\u2588\u2554\u2550\u2550\u2550\u2550\u255d     \u2588\u2588\u2554\u2550\u2550\u2550\u2550\u255d\u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2557\u2588\u2588\u2551     \u2588\u2588\u2554\u2550\u2550\u2550\u2550\u255d
+\u2588\u2588\u2551  \u2588\u2588\u2551\u2588\u2588\u2554\u2588\u2588\u2588\u2588\u2554\u2588\u2588\u2551\u2588\u2588\u2551  \u2588\u2588\u2588\u2557    \u2588\u2588\u2551     \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2551\u2588\u2588\u2551     \u2588\u2588\u2551     
+\u2588\u2588\u2551  \u2588\u2588\u2551\u2588\u2588\u2551\u255a\u2588\u2588\u2554\u255d\u2588\u2588\u2551\u2588\u2588\u2551   \u2588\u2588\u2551    \u2588\u2588\u2551     \u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2551\u2588\u2588\u2551     \u2588\u2588\u2551     
+\u2588\u2588\u2588\u2588\u2588\u2588\u2554\u255d\u2588\u2588\u2551 \u255a\u2550\u255d \u2588\u2588\u2551\u255a\u2588\u2588\u2588\u2588\u2588\u2588\u2554\u255d    \u255a\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2551  \u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u255a\u2588\u2588\u2588\u2588\u2588\u2588\u2557
+\u255a\u2550\u2550\u2550\u2550\u2550\u255d \u255a\u2550\u255d     \u255a\u2550\u255d \u255a\u2550\u2550\u2550\u2550\u2550\u255d      \u255a\u2550\u2550\u2550\u2550\u2550\u255d\u255a\u2550\u255d  \u255a\u2550\u255d\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u255d \u255a\u2550\u2550\u2550\u2550\u2550\u255d
+  */                                                              
+
+public float getDmg(float laserStr, float shieldStr) {
+	float totalDmg = 0;
+	float attack = laserStr;
+	float defense = shieldStr;
+	float blockValue;
+	float attackValue;
+	float mid = 5.50f;
+	/*
+	The values of shield and laser are between 3 and 8.  
+	If a small valued laser hits a large valued shield, the damage should be a large number.
+	If a large valued laser hits a small valued shield, the damage shouild be a large number.
+	Basically, the greater distance between numbers, the more damage.
+	*/
+	if(defense > mid) {
+		blockValue = defense - mid;
+		if(attack <= mid) {
+			attackValue = mid - attack;
+			totalDmg = blockValue + attackValue;
+			//dOf 8: 8 - mid = 2.5
+			//aOf 5: mid - 5 = .5  total dmg = 3
+			//aOf 4: mid - 4 = 1.5  total dmg = 4;
+			//aOf 3: mid - 3 = 2.5  total dmg = 5
+			//total dmg = dOf + aOf
+		}
+		else {
+			attackValue = attack - mid;
+			totalDmg = blockValue - attackValue;
+			//dOf 8: 8 - mid = 2.5
+			//aOf 8:  8 - mid = 2.5 // total 0
+			//aOf 7: 7 - mid = 1.5 // total 1
+			//aOf 6: 6 - mid = .5   // total 2
+			//total dmg = dOF - aOf
+		}
+	}
+	if(defense <= mid) {
+		blockValue = mid - defense;
+		if(attack > mid) {
+			attackValue = attack - mid;
+			totalDmg = blockValue + attackValue;
+			//dOf 3:  mid - 3 = 2.5
+			//aOf 8:  8 - mid = 2.5 = 5
+			//aOf 7: 7 - mid = 1.5  total =4
+			//aOf 6: 6 - mid = .5 total = 3
+		}
+		else {
+			attackValue = mid - attack;
+			totalDmg = blockValue - attackValue;
+			//dOf 3: mid - 3 = 2.5	
+			//aOf 5: mid - 5 = .5 total = 2
+			//aOf 4: mid - 4 = 1.5 total = 1
+			//aOf 3: mid - 3 = 2.5 total = 0 
+		}
+	}
+	return totalDmg;
+}
+public float getDmgTest(float laser, float shield) {
+	float attack = laser;
+	float defense = shield;
+	float totalDmg = attack - defense;
+	return totalDmg;
+	
+}
+/*
  \u2584            \u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584  \u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584  \u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584  \u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584 
 \u2590\u2591\u258c          \u2590\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u258c\u2590\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u258c\u2590\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u258c\u2590\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u258c
 \u2590\u2591\u258c          \u2590\u2591\u2588\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2588\u2591\u258c\u2590\u2591\u2588\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580 \u2590\u2591\u2588\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2580 \u2590\u2591\u2588\u2580\u2580\u2580\u2580\u2580\u2580\u2580\u2588\u2591\u258c
@@ -355,9 +429,11 @@ class Shield {
 
 	public void checkForLasers() {
 		for(Laser laser: lasers) {
-			if(laser.side == side) {
-				if(laser.x >= x + w) {
+			if(laser.side == "left") {
+				if(laser.x >= rightShield.x - rightShield.w) {
 					println(
+					"Laser Dmg : " + laser.laserStr +
+					" // " + "Shield Power : " + shieldStr + " // " +  
 					getDmg(laser.laserStr, shieldStr)
 					);
 				}
@@ -365,62 +441,6 @@ class Shield {
 		}
 	}
 }//
-
-public float getDmg(float laserStr, float shieldStr) {
-	float totalDmg = 0;
-	float attack = laserStr;
-	float defense = shieldStr;
-	float blockValue;
-	float attackValue;
-	float mid = 5.50f;
-	/*
-	The values of shield and laser are between 3 and 8.  
-	If a small valued laser hits a large valued shield, the damage should be a large number.
-	If a large valued laser hits a small valued shield, the damage shouild be a large number.
-	Basically, the greater distance between numbers, the more damage.
-	*/
-	if(defense > mid) {
-		blockValue = defense - mid;
-		if(attack <= mid) {
-			attackValue = mid - attack;
-			totalDmg = blockValue + attackValue;
-			//dOf 8: 8 - mid = 2.5
-			//aOf 5: mid - 5 = .5  total dmg = 3
-			//aOf 4: mid - 4 = 1.5  total dmg = 4;
-			//aOf 3: mid - 3 = 2.5  total dmg = 5
-			//total dmg = dOf + aOf
-		}
-		else {
-			attackValue = attack - mid;
-			totalDmg = blockValue - attackValue;
-			//dOf 8: 8 - mid = 2.5
-			//aOf 8:  8 - mid = 2.5 // total 0
-			//aOf 7: 7 - mid = 1.5 // total 1
-			//aOf 6: 6 - mid = .5   // total 2
-			//total dmg = dOF - aOf
-		}
-	}
-	if(defense <= mid) {
-		blockValue = mid - defense;
-		if(attack > mid) {
-			attackValue = attack - mid;
-			totalDmg = blockValue + attackValue;
-			//dOf 3:  mid - 3 = 2.5
-			//aOf 8:  8 - mid = 2.5 = 5
-			//aOf 7: 7 - mid = 1.5  total =4
-			//aOf 6: 6 - mid = .5 total = 3
-		}
-		else {
-			attackValue = mid - attack;
-			totalDmg = blockValue - attackValue;
-			//dOf 3: mid - 3 = 2.5	
-			//aOf 5: mid - 5 = .5 total = 2
-			//aOf 4: mid - 4 = 1.5 total = 1
-			//aOf 3: mid - 3 = 2.5 total = 0 
-		}
-	}
-	return totalDmg;
-}
 
 /*
  \u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584  \u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584  \u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584  \u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584 
