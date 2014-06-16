@@ -55,7 +55,7 @@ class Shield {
 					"Left Laser Hit " +
 					"Laser Dmg : " + laser.laserStr +
 					" // " + "Shield Power : " + shieldStr + " // " +  
-					getDmgTest(laser.laserStr, shieldStr)
+					getDmg(laser.laserStr, shieldStr)
 					);
 				}
 			}
@@ -68,7 +68,7 @@ class Shield {
 					"Right Laser Hit " +
 					"Laser Dmg : " + rLaser.laserStr +
 					" // " + "Shield Power : " + shieldStr + " // " +  
-					getDmgTest(rLaser.laserStr, shieldStr)
+					getDmg(rLaser.laserStr, shieldStr)
 					);
 				}
 			}	

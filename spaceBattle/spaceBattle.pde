@@ -264,8 +264,7 @@ If a large valued laser hits a small valued shield, the damage shouild be a larg
 Basically, the greater distance between numbers, the more damage.
 */
 
-
-float getDmgTest(float laserStr, float shieldStr) {
+float getDmg(float laserStr, float shieldStr) {
 	
 	float totalDmg = 0;
 	float attack = laserStr;
