@@ -29,6 +29,7 @@ int leftLaserCap = 10;
 int rightLaserCap = 10;
 //----
 boolean gameStart = false;
+boolean how = false;
 Menu startMenu = new Menu(frameWidth/2, frameHeight/2);
 //---- ALL CONTROLS ARE TEMP
 boolean leftFire = true; // fire
@@ -74,12 +75,15 @@ void draw() {
 		starBg[i].moveStar();
 		starBg[i].resetStar();
 	}
-	if(gameStart == false) {
+	if(gameStart == false && how == false) {
 		startMenu.title();
 		startMenu.playButton();
 		startMenu.play();
 		startMenu.hTPButton();
 		startMenu.howToPlay();
+	}
+	else if(how) {
+		startMenu.instruc();
 	}
 	else {
 		rightShield.updatePower();
