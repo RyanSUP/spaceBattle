@@ -36,12 +36,12 @@ class Laser {
 	void display() { // display laser, changes for each side
 		if(side == "left") {
 			strokeWeight(power + powerAdd);
-			stroke(255, 0, 0, 150);
+			stroke(255, 0, 0);
 			line(x, y, x+5, y);
 		}
 		else {
 			strokeWeight(power + powerAdd);
-			stroke(0, 255, 0, 150);
+			stroke(0, 155, 200);
 			line(x, y, x-5, y);
 		}
 		//println(laserStr);

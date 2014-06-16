@@ -49,7 +49,7 @@ Shield leftShield = new Shield("left", frameWidth/6, frameHeight/2);
 Shield rightShield = new Shield("right", frameWidth/6 * 5, frameHeight/2);
 //----
 SpaceShip leftShip = new SpaceShip(0, 0, "left", frameWidth/6); 
-SpaceShip rightShip = new SpaceShip(frameWidth/6 * 5, 0, "right", frameWidth/6 * 5);
+SpaceShip rightShip = new SpaceShip(frameWidth/6 * 5, 0, "right", frameWidth/6);
 //---- ^ Initialize ships screen position and to proper side using string arguement
 //---- "left" = left side of screen, any other string is right side of screen
 void setup() {
@@ -75,12 +75,14 @@ void draw() {
 	rightShield.updatePower();
 	rightShield.display();
 	rightShip.displayShip();
-	rightShield.checkForLasers();
+	rightShip.healthBar();
+	rightShip.checkForLasers();
 	
 	leftShield.updatePower();
 	leftShield.display();
 	leftShip.displayShip();
-	leftShield.checkForLasers();
+	leftShip.healthBar();
+	leftShip.checkForLasers();
 
 	
 	checkForDelete();
@@ -156,14 +158,14 @@ void displayAll() {
 
 void fireLeft() {  // create a laser with these properties if the key is pressed
 	if(lasers.size() < leftLaserCap) {
-		Laser laser = new Laser("left", random(0, frameWidth/6), random(0, frameHeight), leftShip.laserAdjustment); 
+		Laser laser = new Laser("left", random(0, frameWidth/6), random(100, frameHeight - 100), leftShip.laserAdjustment); 
 		lasers.add(laser); // add laser to the laser array list
 	}
 }
 
 void fireRight() {  // create a laser with these properties if the key is pressed
 	if(rightLasers.size() < rightLaserCap) {
-		Laser rLaser = new Laser("right", random(frameWidth/6* 5, frameWidth), random(0, frameHeight), rightShip.laserAdjustment);
+		Laser rLaser = new Laser("right", random(frameWidth/6* 5, frameWidth), random(100, frameHeight - 100), rightShip.laserAdjustment);
 		rightLasers.add(rLaser); // add laser to the laser array list
 	}
 }
