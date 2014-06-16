@@ -54,7 +54,7 @@ class Shield {
 					println(
 					"Laser Dmg : " + laser.laserStr +
 					" // " + "Shield Power : " + shieldStr + " // " +  
-					getDmg(laser.laserStr, shieldStr)
+					getDmgTest(laser.laserStr, shieldStr)
 					);
 				}
 			}

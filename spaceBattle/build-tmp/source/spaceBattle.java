@@ -304,6 +304,16 @@ public float getDmg(float laserStr, float shieldStr) {
 	}
 	return totalDmg;
 }
+
+public float getDmgTest(float laserStr, float shieldStr) {
+	
+	float totalDmg = 0;
+	float attack = laserStr;
+	float defense = shieldStr;
+	
+	totalDmg = abs(defense - attack);
+	return totalDmg;
+}
 /*
  \u2584            \u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584  \u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584  \u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584  \u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584\u2584 
 \u2590\u2591\u258c          \u2590\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u258c\u2590\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u258c\u2590\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u258c\u2590\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u258c
@@ -429,7 +439,7 @@ class Shield {
 					println(
 					"Laser Dmg : " + laser.laserStr +
 					" // " + "Shield Power : " + shieldStr + " // " +  
-					getDmg(laser.laserStr, shieldStr)
+					getDmgTest(laser.laserStr, shieldStr)
 					);
 				}
 			}
