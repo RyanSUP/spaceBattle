@@ -23,8 +23,8 @@
 ▐░░░░░░░░░░▌ ▐░▌       ▐░▌     ▐░▌          ▐░▌     ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌
  ▀▀▀▀▀▀▀▀▀▀   ▀         ▀       ▀            ▀       ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀  */
                                                                               
-int frameWidth = 1400; // Width of window in passable variable
-int frameHeight = 650; // Height of window in passable variable
+final int frameWidth = 1400; // Width of window in passable variable
+final int frameHeight = 650; // Height of window in passable variable
 //---- ALL CONTROLS ARE TEMP
 boolean aPressed = false; // fire
 boolean ePressed = false; // raise power
@@ -121,7 +121,7 @@ void checkForDelete() {
 		Laser thisLaser = lasers.get(i); // creat a laser that is a dublicate of the lasers in the game
 		if(thisLaser.del) { // if the laser duplicate has the delete property
 			lasers.remove(i); // remove the original laser from the game
-			break; // stop the code from unneccisary checking
+			checkForDelete(); // call function again to delete more lasers
 		}
 	}
 }
