@@ -25,7 +25,8 @@
                                                                               
 final int frameWidth = 1400; // Width of window in passable variable
 final int frameHeight = 650; // Height of window in passable variable
-int laserCap = 10;
+int leftLaserCap = 10;
+int rightLaserCap = 10;
 //---- ALL CONTROLS ARE TEMP
 boolean aPressed = true; // fire
 boolean ePressed = false; // raise power
@@ -42,6 +43,7 @@ boolean kayPressed = false; // lower shield
 Star [] starBg = new Star [100]; // Initialize star background
 //----
 ArrayList <Laser> lasers;
+ArrayList <Laser> rightLasers;
 //----
 Shield leftShield = new Shield("left", frameWidth/6, frameHeight/2);
 Shield rightShield = new Shield("right", frameWidth/6 * 5, frameHeight/2);
@@ -57,7 +59,7 @@ void setup() {
 	for(int i = 0; i < starBg.length; i++) { // initialize starBg to star class
 		starBg[i] = new Star();
 	}
-	
+	rightLasers = new ArrayList();
 	lasers = new ArrayList();
 }
 
@@ -117,6 +119,10 @@ void moveAll() {
 	for(Laser laser : lasers) {  // for each laser in the array list, move them
 		laser.move();
 	}
+
+	for(Laser rLaser : rightLasers) {  // for each laser in the array list, move them
+		rLaser.move();
+	}
 }
 
 void checkForDelete() {
@@ -127,25 +133,38 @@ void checkForDelete() {
 			checkForDelete(); // call function again to delete more lasers
 		}
 	}
+
+
+	for(int i = 0; i < rightLasers.size(); i++) { // search through the array list
+		Laser thisLaser = rightLasers.get(i); // creat a laser that is a dublicate of the lasers in the game
+		if(thisLaser.del) { // if the laser duplicate has the delete property
+			rightLasers.remove(i); // remove the original laser from the game
+			checkForDelete(); // call function again to delete more lasers
+		}
+	}
 }
 
 void displayAll() {
 	for(Laser laser : lasers) { // for each laser in the array list, display them
 		laser.display();
 	}
+
+	for(Laser rLaser : rightLasers) { // for each laser in the array list, display them
+		rLaser.display();
+	}
 }
 
 void fireLeft() {  // create a laser with these properties if the key is pressed
-	if(lasers.size() < laserCap) {
+	if(lasers.size() < leftLaserCap) {
 		Laser laser = new Laser("left", random(0, frameWidth/6), random(0, frameHeight), leftShip.laserAdjustment); 
 		lasers.add(laser); // add laser to the laser array list
 	}
 }
 
 void fireRight() {  // create a laser with these properties if the key is pressed
-	if(lasers.size() < laserCap) {
-		Laser laser = new Laser("right", random(frameWidth/6* 5, frameWidth), random(0, frameHeight), rightShip.laserAdjustment);
-		lasers.add(laser); // add laser to the laser array list
+	if(rightLasers.size() < rightLaserCap) {
+		Laser rLaser = new Laser("right", random(frameWidth/6* 5, frameWidth), random(0, frameHeight), rightShip.laserAdjustment);
+		rightLasers.add(rLaser); // add laser to the laser array list
 	}
 }
 //--------- laser stuff ---------------------------------
