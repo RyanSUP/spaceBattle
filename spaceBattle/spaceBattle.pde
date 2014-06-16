@@ -97,8 +97,9 @@ void draw() {
 	if(fPressed) leftShip.raiseShieldPower();
 	if(kayPressed) rightShip.lowerShieldPower();
 	if(hPressed) rightShip.raiseShieldPower();
-	if(aPressed) fireLeft();
-	if(lPressed) fireRight();
+
+	if(aPressed && leftShip.life != 0) fireLeft();
+	if(lPressed && rightShip.life != 0) fireRight();
 }
 /*
 ██╗      █████╗ ███████╗███████╗██████╗     

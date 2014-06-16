@@ -14,7 +14,7 @@
 class Shield {
 	
 	String side;
-	float x, y, w, h, shieldPower, shieldStr;
+	float x, y, w, h, shieldPower, shieldStr, fillVal;
 	
 	Shield(String sideIn, float shieldX, float shieldY) {
 		side = sideIn;
@@ -28,10 +28,10 @@ class Shield {
 	void display() {
 		noStroke();
 		if(side == "left") {
-			fill(0, 100, 200, shieldPower + leftShip.shieldAdjustment*70);
+			fill(0, 100, 200, 100 + leftShip.shieldAdjustment*30);
 		}
 		else {
-			fill(0, 100, 200, shieldPower + rightShip.shieldAdjustment*70);
+			fill(0, 100, 200, 100 + rightShip.shieldAdjustment*30);
 		}
 		rectMode(CENTER);
 		rect(x, y, w, h);
