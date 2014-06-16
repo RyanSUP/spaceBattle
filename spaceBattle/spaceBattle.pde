@@ -31,17 +31,17 @@ int rightLaserCap = 10;
 boolean gameStart = false;
 Menu startMenu = new Menu(frameWidth/2, frameHeight/2);
 //---- ALL CONTROLS ARE TEMP
-boolean aPressed = true; // fire
-boolean ePressed = false; // raise power
-boolean qPressed = false; // lower power
-boolean fPressed = false; // raise shield
-boolean sPressed = false; // lower shield
+boolean leftFire = true; // fire
+boolean wPressed = false; // raise power
+boolean sPressed = false; // lower power
+boolean dPressed = false; // raise shield
+boolean aPressed = false; // lower shield
 //----^ left controls ^----
-boolean lPressed = true; // fire
-boolean iPressed = false; // raise power
-boolean pPressed = false; // lower power
-boolean hPressed = false; // raise shield
-boolean kayPressed = false; // lower shield
+boolean rightFire = true; // fire
+boolean upPressed = false; // raise power
+boolean downPressed = false; // lower power
+boolean rightPressed = false; // raise shield
+boolean leftPressed = false; // lower shield
 //----^ right controls ^----
 Star [] starBg = new Star [100]; // Initialize star background
 //----
@@ -75,8 +75,11 @@ void draw() {
 		starBg[i].resetStar();
 	}
 	if(gameStart == false) {
-		startMenu.displayButton();
+		startMenu.title();
+		startMenu.playButton();
 		startMenu.play();
+		startMenu.hTPButton();
+		startMenu.howToPlay();
 	}
 	else {
 		rightShield.updatePower();
@@ -96,17 +99,17 @@ void draw() {
 		moveAll();
 		displayAll();
 
-		if(ePressed) leftShip.raiseLaserPower();
-		if(qPressed) leftShip.lowerLaserPower();
-		if(iPressed) rightShip.raiseLaserPower();
-		if(pPressed) rightShip.lowerLaserPower();
-		if(sPressed) leftShip.lowerShieldPower();
-		if(fPressed) leftShip.raiseShieldPower();
-		if(kayPressed) rightShip.lowerShieldPower();
-		if(hPressed) rightShip.raiseShieldPower();
+		if(wPressed) leftShip.raiseLaserPower();
+		if(sPressed) leftShip.lowerLaserPower();
+		if(upPressed) rightShip.raiseLaserPower();
+		if(downPressed) rightShip.lowerLaserPower();
+		if(aPressed) leftShip.lowerShieldPower();
+		if(dPressed) leftShip.raiseShieldPower();
+		if(leftPressed) rightShip.lowerShieldPower();
+		if(rightPressed) rightShip.raiseShieldPower();
 
-		if(aPressed && leftShip.life != 0) fireLeft();
-		if(lPressed && rightShip.life != 0) fireRight();
+		if(leftFire && leftShip.life != 0) fireLeft();
+		if(rightFire && rightShip.life != 0) fireRight();
 	}
 }
 /*
@@ -196,68 +199,60 @@ void fireRight() {  // create a laser with these properties if the key is presse
                                                                  */
 //----------- control stuff --------------------------
 void keyPressed() { // set repective keys boolean to true if the key is down
-	/*if(key == 'a' || key == 'A') {
+	if(key == 'w' || key == 'W') {
+		wPressed = true;
+	}
+	if(key == 'a' || key == 'A') {
 		aPressed = true;
-	}
-	if(key == 'l' || key == 'L') {
-		lPressed = true;
-	} */
-	if(key == 'e' || key == 'E') {
-		ePressed = true;
-	}
-	if(key == 'q' || key == 'Q') {
-		qPressed = true;
-	}
-	if(key == 'i' || key == 'I') {
-		iPressed = true;
-	}
-	if(key == 'p' || key == 'P') {
-		pPressed = true;
-	}
-	if(key == 'k' || key == 'K') {
-		kayPressed = true;
-	}
-	if(key == 'h' || key == 'H') {
-		hPressed = true;
 	}
 	if(key == 's' || key == 'S') {
 		sPressed = true;
 	}
-	if(key == 'f' || key == 'F') {
-		fPressed = true;
+	if(key == 'd' || key == 'D') {
+		dPressed = true;
+	}
+	if(key == CODED) {
+		if(keyCode == UP) {
+			upPressed = true;
+		}
+		if(keyCode == DOWN) {
+			downPressed = true;
+		}
+		if(keyCode == LEFT) {
+			leftPressed = true;
+		}
+		if(keyCode == RIGHT) {
+			rightPressed = true;
+		}
 	}
 }
 
 void keyReleased() { // if the key is released turn it to false
-	if(key == 'e' || key == 'E') {
-		ePressed = false;
-	}/*
+	if(key == 'w' || key == 'W') {
+		wPressed = false;
+	}
 	if(key == 'a' || key == 'A') {
 		aPressed = false;
-	}
-	if(key == 'l' || key == 'L') {
-		lPressed = false;
-	} */
-	if(key == 'q' || key == 'Q') {
-		qPressed = false;
-	}
-	if(key == 'i' || key == 'I') {
-		iPressed = false;
-	}
-	if(key == 'p' || key == 'P') {
-		pPressed = false;
-	}
-	if(key == 'k' || key == 'K') {
-		kayPressed = false;
-	}
-	if(key == 'h' || key == 'H') {
-		hPressed = false;
 	}
 	if(key == 's' || key == 'S') {
 		sPressed = false;
 	}
-	if(key == 'f' || key == 'F') {
-		fPressed = false;
+	if(key == 'd' || key == 'D') {
+		dPressed = false;
+	}
+	if(key == CODED) {
+		if(keyCode == UP) {
+			upPressed = false;
+		}
+		if(keyCode == DOWN) {
+			downPressed = false;
+		}
+		if(keyCode == LEFT) {
+			leftPressed = false;
+		}
+		if(keyCode == RIGHT) {
+			rightPressed = false;
+		}
 	}
 }
 //----------- control stuff --------------------------
@@ -295,29 +290,57 @@ float getDmg(float laserStr, float shieldStr) {
 */
 
 class Menu {
-	float x, y, w, h;
+	float x, y, w, h, hY;
 	Menu(int inX, int inY) {
 		x = inX;
 		y = inY;
 		w = 200;
 		h = 75;
+		hY = inY + h + 10;
+	}
+	void title() {
+		textSize(150);
+		fill(0,100, 200);
+		textAlign(CENTER);
+		text("BATTLE STATIONS", x, y - 150);
 	}
 
-	void displayButton() {
+	void playButton() {
 		rectMode(CENTER);
 		strokeWeight(3);
 		stroke(255, 100);
 		fill(100,100);
 		rect(x, y, w, h);
 
-		textSize(32);
+		textSize(40);
 		fill(255);
 		textAlign(CENTER);
-		text("PLAY", x, y+10);
+		text("PLAY", x, y+15);
 	}
 
 	void play() {
-		if(mousePressed && mouseX >= x - w/2 && mouseX <= x + w/2 && mouseY >= y - h/2 && mouseY <= y + h/2)
-		gameStart  = true;
+		if(mousePressed && mouseX >= x - w/2 && mouseX <= x + w/2 && mouseY >= y - h/2 +10 && mouseY <= y + h/2) {
+			gameStart  = true;
+			println("play");
+		}
 	}
+	
+	void hTPButton() {
+		rectMode(CENTER);
+		strokeWeight(3);
+		stroke(255, 100);
+		fill(100,100);
+		rect(x, y + h + 20, w, h);
+
+		textSize(30);
+		fill(255);
+		textAlign(CENTER);
+		text("How To Play", x, hY + 20);
+	}
+
+	void howToPlay() {
+		if(mousePressed && mouseX >= x - w/2 && mouseX <= x + w/2 && mouseY >= hY - h/2 && mouseY <= hY + h/2) {
+			println("how to play");
+		}
+	} 
 }
