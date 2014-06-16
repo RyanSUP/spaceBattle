@@ -25,14 +25,15 @@
                                                                               
 final int frameWidth = 1400; // Width of window in passable variable
 final int frameHeight = 650; // Height of window in passable variable
+int laserCap = 10;
 //---- ALL CONTROLS ARE TEMP
-boolean aPressed = false; // fire
+boolean aPressed = true; // fire
 boolean ePressed = false; // raise power
 boolean qPressed = false; // lower power
 boolean fPressed = false; // raise shield
 boolean sPressed = false; // lower shield
 //----^ left controls ^----
-boolean lPressed = false; // fire
+boolean lPressed = true; // fire
 boolean iPressed = false; // raise power
 boolean pPressed = false; // lower power
 boolean hPressed = false; // raise shield
@@ -68,10 +69,12 @@ void draw() {
 		starBg[i].moveStar();
 		starBg[i].resetStar();
 	}
+
 	rightShield.updatePower();
 	rightShield.display();
 	rightShip.displayShip();
 	rightShield.checkForLasers();
+	
 	leftShield.updatePower();
 	leftShield.display();
 	leftShip.displayShip();
@@ -133,13 +136,17 @@ void displayAll() {
 }
 
 void fireLeft() {  // create a laser with these properties if the key is pressed
-	Laser laser = new Laser("left", random(0, frameWidth/6), random(0, frameHeight), leftShip.laserAdjustment); 
-	lasers.add(laser); // add laser to the laser array list
+	if(lasers.size() < laserCap) {
+		Laser laser = new Laser("left", random(0, frameWidth/6), random(0, frameHeight), leftShip.laserAdjustment); 
+		lasers.add(laser); // add laser to the laser array list
+	}
 }
 
 void fireRight() {  // create a laser with these properties if the key is pressed
-	Laser laser = new Laser("right", random(frameWidth/6* 5, frameWidth), random(0, frameHeight), rightShip.laserAdjustment);
-	lasers.add(laser); // add laser to the laser array list
+	if(lasers.size() < laserCap) {
+		Laser laser = new Laser("right", random(frameWidth/6* 5, frameWidth), random(0, frameHeight), rightShip.laserAdjustment);
+		lasers.add(laser); // add laser to the laser array list
+	}
 }
 //--------- laser stuff ---------------------------------
 /*
@@ -159,12 +166,12 @@ void fireRight() {  // create a laser with these properties if the key is presse
                                                                  */
 //----------- control stuff --------------------------
 void keyPressed() { // set repective keys boolean to true if the key is down
-	if(key == 'a' || key == 'A') {
+	/*if(key == 'a' || key == 'A') {
 		aPressed = true;
 	}
 	if(key == 'l' || key == 'L') {
 		lPressed = true;
-	}
+	} */
 	if(key == 'e' || key == 'E') {
 		ePressed = true;
 	}
@@ -194,13 +201,13 @@ void keyPressed() { // set repective keys boolean to true if the key is down
 void keyReleased() { // if the key is released turn it to false
 	if(key == 'e' || key == 'E') {
 		ePressed = false;
-	}
+	}/*
 	if(key == 'a' || key == 'A') {
 		aPressed = false;
 	}
 	if(key == 'l' || key == 'L') {
 		lPressed = false;
-	}
+	} */
 	if(key == 'q' || key == 'Q') {
 		qPressed = false;
 	}
