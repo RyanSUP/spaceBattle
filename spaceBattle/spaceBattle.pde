@@ -27,6 +27,9 @@ final int frameWidth = 1400; // Width of window in passable variable
 final int frameHeight = 650; // Height of window in passable variable
 int leftLaserCap = 10;
 int rightLaserCap = 10;
+//----
+boolean gameStart = false;
+Menu startMenu = new Menu(frameWidth/2, frameHeight/2);
 //---- ALL CONTROLS ARE TEMP
 boolean aPressed = true; // fire
 boolean ePressed = false; // raise power
@@ -71,35 +74,40 @@ void draw() {
 		starBg[i].moveStar();
 		starBg[i].resetStar();
 	}
+	if(gameStart == false) {
+		startMenu.displayButton();
+		startMenu.play();
+	}
+	else {
+		rightShield.updatePower();
+		rightShield.display();
+		rightShip.displayShip();
+		rightShip.healthBar();
+		rightShip.checkForLasers();
+		
+		leftShield.updatePower();
+		leftShield.display();
+		leftShip.displayShip();
+		leftShip.healthBar();
+		leftShip.checkForLasers();
 
-	rightShield.updatePower();
-	rightShield.display();
-	rightShip.displayShip();
-	rightShip.healthBar();
-	rightShip.checkForLasers();
-	
-	leftShield.updatePower();
-	leftShield.display();
-	leftShip.displayShip();
-	leftShip.healthBar();
-	leftShip.checkForLasers();
+		
+		checkForDelete();
+		moveAll();
+		displayAll();
 
-	
-	checkForDelete();
-	moveAll();
-	displayAll();
+		if(ePressed) leftShip.raiseLaserPower();
+		if(qPressed) leftShip.lowerLaserPower();
+		if(iPressed) rightShip.raiseLaserPower();
+		if(pPressed) rightShip.lowerLaserPower();
+		if(sPressed) leftShip.lowerShieldPower();
+		if(fPressed) leftShip.raiseShieldPower();
+		if(kayPressed) rightShip.lowerShieldPower();
+		if(hPressed) rightShip.raiseShieldPower();
 
-	if(ePressed) leftShip.raiseLaserPower();
-	if(qPressed) leftShip.lowerLaserPower();
-	if(iPressed) rightShip.raiseLaserPower();
-	if(pPressed) rightShip.lowerLaserPower();
-	if(sPressed) leftShip.lowerShieldPower();
-	if(fPressed) leftShip.raiseShieldPower();
-	if(kayPressed) rightShip.lowerShieldPower();
-	if(hPressed) rightShip.raiseShieldPower();
-
-	if(aPressed && leftShip.life != 0) fireLeft();
-	if(lPressed && rightShip.life != 0) fireRight();
+		if(aPressed && leftShip.life != 0) fireLeft();
+		if(lPressed && rightShip.life != 0) fireRight();
+	}
 }
 /*
 ██╗      █████╗ ███████╗███████╗██████╗     
@@ -275,4 +283,41 @@ float getDmg(float laserStr, float shieldStr) {
 	
 	totalDmg = abs(defense - attack);
 	return totalDmg;
+}
+
+/*
+███╗   ███╗███████╗███╗   ██╗██╗   ██╗
+████╗ ████║██╔════╝████╗  ██║██║   ██║
+██╔████╔██║█████╗  ██╔██╗ ██║██║   ██║
+██║╚██╔╝██║██╔══╝  ██║╚██╗██║██║   ██║
+██║ ╚═╝ ██║███████╗██║ ╚████║╚██████╔╝
+╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝ ╚═════╝ 
+*/
+
+class Menu {
+	float x, y, w, h;
+	Menu(int inX, int inY) {
+		x = inX;
+		y = inY;
+		w = 200;
+		h = 75;
+	}
+
+	void displayButton() {
+		rectMode(CENTER);
+		strokeWeight(3);
+		stroke(255, 100);
+		fill(100,100);
+		rect(x, y, w, h);
+
+		textSize(32);
+		fill(255);
+		textAlign(CENTER);
+		text("PLAY", x, y+10);
+	}
+
+	void play() {
+		if(mousePressed && mouseX >= x - w/2 && mouseX <= x + w/2 && mouseY >= y - h/2 && mouseY <= y + h/2)
+		gameStart  = true;
+	}
 }
