@@ -47,17 +47,31 @@ class Shield {
 	}
 
 	void checkForLasers() {
-		for(Laser laser: lasers) {
-			if(laser.side == "left") {
+		if(side == "left") {
+			for(Laser laser: lasers) {
 				if(laser.x >= rightShield.x - rightShield.w/2 && laser.hit == false) {
 					laser.hit = true;
 					println(
+					"Left Laser Hit " +
 					"Laser Dmg : " + laser.laserStr +
 					" // " + "Shield Power : " + shieldStr + " // " +  
 					getDmgTest(laser.laserStr, shieldStr)
 					);
 				}
 			}
+		}
+		else {
+			for(Laser rLaser : rightLasers) {
+				if(rLaser.x <= leftShield.x + leftShield.w/2 && rLaser.hit == false) {
+					rLaser.hit = true;
+					println(
+					"Right Laser Hit " +
+					"Laser Dmg : " + rLaser.laserStr +
+					" // " + "Shield Power : " + shieldStr + " // " +  
+					getDmgTest(rLaser.laserStr, shieldStr)
+					);
+				}
+			}	
 		}
 	}
 }//
