@@ -28,6 +28,10 @@ final int frameHeight = 650; // Height of window in passable variable
 int leftLaserCap = 10;
 int rightLaserCap = 10;
 //----
+PImage starBase;
+PImage shieldImg;
+PImage rightShieldImg;
+//----
 boolean gameStart = false;
 boolean how = false;
 Menu startMenu = new Menu(frameWidth/2, frameHeight/2);
@@ -52,11 +56,14 @@ ArrayList <Laser> rightLasers;
 Shield leftShield = new Shield("left", frameWidth/6, frameHeight/2);
 Shield rightShield = new Shield("right", frameWidth/6 * 5, frameHeight/2);
 //----
-SpaceShip leftShip = new SpaceShip(0, 0, "left", frameWidth/6); 
-SpaceShip rightShip = new SpaceShip(frameWidth/6 * 5, 0, "right", frameWidth/6);
+SpaceShip leftShip = new SpaceShip(-264, -5, "left", 527); 
+SpaceShip rightShip = new SpaceShip(1136, -5, "right", 527);
 //---- ^ Initialize ships screen position and to proper side using string arguement
 //---- "left" = left side of screen, any other string is right side of screen
 void setup() {
+	starBase = loadImage("starBase2.png");
+	shieldImg = loadImage("shield.png");
+	rightShieldImg = loadImage("shieldR.png");
 	frameRate(60);
 	size(frameWidth,frameHeight);
 	
@@ -87,14 +94,14 @@ void draw() {
 	}
 	else {
 		rightShield.updatePower();
-		rightShield.display();
 		rightShip.displayShip();
+		rightShield.display();
 		rightShip.healthBar();
 		rightShip.checkForLasers();
 		
 		leftShield.updatePower();
-		leftShield.display();
 		leftShip.displayShip();
+		leftShield.display();
 		leftShip.healthBar();
 		leftShip.checkForLasers();
 
