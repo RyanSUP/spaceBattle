@@ -41,10 +41,9 @@ class SpaceShip {
 		side = sideIn; // screen side
 	}
 	void displayShip() {
-		noStroke();
-		fill(150);
-		rectMode(CORNER);
-		rect(shipX,shipY, wid, height);
+		tint(255, 255);
+		imageMode(CORNER);
+		image(starBase, shipX,shipY, wid, 716);
 	}
 
 	void raiseLaserPower() { // raise the power (stroke) of laser
@@ -113,10 +112,10 @@ class SpaceShip {
 	void healthBar() {
 		fill(0,255, 0);
 		if(side == "left") {
-			rect(shipX  + wid + 100, shipY, life/2, 10); // display the hp bar
+			rect(shipX  + wid + 200, shipY +10, life/2, 10); // display the hp bar
 		}
 		else {
-			rect(shipX - wid + 120, shipY, life/2 *-1, 10);
+			rect(shipX - wid + 420, shipY +10, life/2 *-1, 10);
 		}
 	}
 }

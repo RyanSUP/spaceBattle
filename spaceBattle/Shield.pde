@@ -20,21 +20,24 @@ class Shield {
 		side = sideIn;
 		x = shieldX;
 		y = shieldY;
-		w = 100;
-		h = 700; 
+		w = 371;
+		h = 650; 
 		shieldPower = 3;
 	}
 
 	void display() {
 		noStroke();
 		if(side == "left") {
-			fill(0, 100, 200, 100 + leftShip.shieldAdjustment*30);
+			tint(255, 100 + leftShip.shieldAdjustment*30);
+			imageMode(CENTER);
+			image(shieldImg, x, y, w, h);
+	
 		}
 		else {
-			fill(0, 100, 200, 100 + rightShip.shieldAdjustment*30);
+			tint(255, 100 + rightShip.shieldAdjustment*30);
+			imageMode(CENTER);
+			image(rightShieldImg, x, y, w, h);
 		}
-		rectMode(CENTER);
-		rect(x, y, w, h);
 	}
 
 	void updatePower() {
